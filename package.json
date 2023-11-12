@@ -1,0 +1,18 @@
+{
+  "name": "lsdp-inventory",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "James Ramos, Carlos Bernal-Urbina",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "express-handlebars": "^7.1.2",
+    "forever": "^4.0.3",
+    "mysql": "^2.18.1",
+    "react-router-dom": "^6.18.0"
+  }
+}
