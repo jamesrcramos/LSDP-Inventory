@@ -1,36 +1,3 @@
 <!-- index.hbs -->
-<h1>The server is running!</h1>
-<p>If you see this text, the server is <strong>definitely</strong> working!</p>
-
-{{!-- Create a table --}}
-<table>
-
-    {{!-- Header section --}}
-    <thead>
-
-        {{!-- For just the first row, we print each key of the row object as a header cell so we
-        know what each column means when the page renders --}}
-        <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-        </tr>
-    </thead>
-
-    {{!-- Body section --}}
-    <tbody>
-
-        {{!-- For each row, print the attributes in order --}}
-        {{#each data}}
-        <tr>
-            <td>{{this.componentID}}</td>
-            <td>{{this.componentName}}</td>
-            <td>{{this.componentDescription}}</td>
-            <td>{{this.partID}}</td>
-            <td>{{this.componentNotes}}</td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+<h1>Home</h1>
+<p>At Lone Star Dairy, a powder processing plant, maintenance personnel have to deal with swapping out valves, motors, pumps, etc. on a daily basis. In an environment with many part numbers (over 500) and even more components utilizing those part numbers (over 5000), this work becomes harder to finish without an asset management system. This unnecessary increase in work, time spent, and resources can be resolved by creating a website with a database that provides a user interface that allows Lone Star employees to manage assets through operations such as creating, accessing, updating, and deleting.</p>
