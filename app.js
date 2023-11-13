@@ -29,14 +29,19 @@ var db = require('./database/db-connector')
 */
 // app.js
 
-app.get('/', function(req, res)
+app.get(['/', '/index'], function(req, res)
+    {  
+        res.render('index');
+    });
+
+app.get('/components', function(req, res)
     {
         let query1 = "SELECT * FROM Components;"; 
         
         db.pool.query(query1, function(error, rows, fields){
-            res.render('index', {data: rows});                 
+            res.render('components', {data: rows});                 
         })   
-    });                                         
+    }); 
 
 /*
     LISTENER
