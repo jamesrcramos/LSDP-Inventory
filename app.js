@@ -34,15 +34,23 @@ app.get(['/', '/index'], function(req, res)
         res.render('index');
     });
 
-app.get('/components', function(req, res)
+app.get('/equipment', function(req, res)
     {
-        let query1 = "SELECT * FROM Components;"; 
+        let query1 = "SELECT * FROM Equipment;"; 
         
         db.pool.query(query1, function(error, rows, fields){
+            res.render('equipment', {data: rows});                 
+        })   
+    });
+
+app.get('/components', function(req, res)
+    {
+        let query2 = "SELECT * FROM Components;"; 
+        
+        db.pool.query(query2, function(error, rows, fields){
             res.render('components', {data: rows});                 
         })   
-    }); 
-
+    });
 /*
     LISTENER
 */
