@@ -10,8 +10,16 @@ PORT        = 53799;                 // Set a port number at the top so it's eas
 // app.js
 const { engine } = require('express-handlebars');
 var exphbs = require('express-handlebars');     // Import express-handlebars
-app.engine('.hbs', engine({extname: ".hbs"}));  // Create an instance of the handlebars engine to process templates
+
+app.engine('.hbs', engine({
+    extname: ".hbs",
+    defaultLayout: 'main',
+    layoutsDir: 'views/layouts',
+    partialsDir: 'views/partials'
+}));  // Create an instance of the handlebars engine to process templates
+
 app.set('view engine', '.hbs');                 // Tell express to use the handlebars engine whenever it encounters a *.hbs file.
+app.set('views', 'views');
 
 // Database
 var db = require('./database/db-connector')
