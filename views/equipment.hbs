@@ -1,8 +1,8 @@
 <!-- index.hbs -->
 <h1>Equipment</h1>
 
-{{!-- Create a table --}}
-<table>
+{{!-- Displaying Table --}}
+<table id="equipment-table">
 
     {{!-- Header section --}}
     <thead>
@@ -31,3 +31,18 @@
         {{/each}}
     </tbody>
 </table>
+
+{{!-- Adding Data to Table --}}
+<h2>Add New Equipment</h2>
+<form id="add-equipment-form-ajax">
+    <label for="input-name">Equipment Name: </label>
+    <input type="text" name="input-name" id="input-name">
+
+    <label for="input-notes">Notes: </label>
+    <input type="text" name="input-notes" id="input-notes">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_equipment.js"></script>

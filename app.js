@@ -5,6 +5,11 @@
 */
 var express = require('express');   // We are using the express library for the web server
 var app     = express();            // We need to instantiate an express object to interact with the server in our code
+
+app.use(express.json())
+app.use(express.urlencoded({extended: true}))
+app.use(express.static('public'))
+
 PORT        = 53799;                 // Set a port number at the top so it's easy to change in the future
 
 // app.js
@@ -27,8 +32,7 @@ var db = require('./database/db-connector')
 /*
     ROUTES
 */
-// app.js
-
+// displaying pages
 app.get(['/', '/index'], function(req, res)
     {  
         res.render('index');
@@ -61,7 +65,7 @@ app.get('/parts', function(req, res)
         })   
     });
 
-    app.get('/manuals', function(req, res)
+app.get('/manuals', function(req, res)
     {
         let query4 = "SELECT * FROM Manuals;"; 
         
@@ -70,7 +74,7 @@ app.get('/parts', function(req, res)
         })   
     });
 
-    app.get('/manufacturers', function(req, res)
+app.get('/manufacturers', function(req, res)
     {
         let query5 = "SELECT * FROM Manufacturers;"; 
         
@@ -78,6 +82,46 @@ app.get('/parts', function(req, res)
             res.render('manufacturers', {data: rows});                 
         })   
     });
+
+// adding new data
+app.post('/add-equipment-ajax', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Equipment (equipmentName, equipmentNotes) VALUES ('${data.name}', '${data.notes}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // If there was no error, perform a SELECT * on bsg_people
+            query2 = `SELECT * FROM Equipment;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
 
 /*
     LISTENER
