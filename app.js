@@ -51,6 +51,34 @@ app.get('/components', function(req, res)
             res.render('components', {data: rows});                 
         })   
     });
+
+app.get('/parts', function(req, res)
+    {
+        let query3 = "SELECT * FROM Parts;"; 
+        
+        db.pool.query(query3, function(error, rows, fields){
+            res.render('parts', {data: rows});                 
+        })   
+    });
+
+    app.get('/manuals', function(req, res)
+    {
+        let query4 = "SELECT * FROM Manuals;"; 
+        
+        db.pool.query(query4, function(error, rows, fields){
+            res.render('manuals', {data: rows});                 
+        })   
+    });
+
+    app.get('/manufacturers', function(req, res)
+    {
+        let query5 = "SELECT * FROM Manufacturers;"; 
+        
+        db.pool.query(query5, function(error, rows, fields){
+            res.render('manufacturers', {data: rows});                 
+        })   
+    });
+
 /*
     LISTENER
 */
