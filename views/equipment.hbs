@@ -1,4 +1,5 @@
-<!-- index.hbs -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
 <h1>Equipment</h1>
 
 {{!-- Displaying Table --}}
@@ -15,6 +16,7 @@
                 {{@key}}
             </th>
             {{/each}}
+            <th>delete</th>
         </tr>
     </thead>
 
@@ -27,10 +29,12 @@
             <td>{{this.equipmentID}}</td>
             <td>{{this.equipmentName}}</td>
             <td>{{this.equipmentNotes}}</td>
+            <td><button onclick="deleteEquipment({{this.equipmentID}})">Delete</button></td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script src="./js/delete_equipment.js"></script>
 
 {{!-- Adding Data to Table --}}
 <h2>Add New Equipment</h2>

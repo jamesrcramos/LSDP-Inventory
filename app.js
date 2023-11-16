@@ -150,6 +150,48 @@ app.post('/add-equipment-ajax', function(req, res)
     })
 });
 
+// deleting data
+app.delete('/delete-equipment-ajax/', function(req,res,next){
+    let data = req.body;
+    let equipmentID = parseInt(data.id);
+    // let deleteBsg_Cert_People = `DELETE FROM bsg_cert_people WHERE pid = ?`; // deleting value from intersection table
+    let delete_equipment = `DELETE FROM Equipment WHERE equipmentID = ?`;
+  
+  
+        //   // Run the 1st query
+        //   db.pool.query(deleteBsg_Cert_People, [personID], function(error, rows, fields){
+        //       if (error) {
+  
+        //       // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+        //       console.log(error);
+        //       res.sendStatus(400);
+        //       }
+  
+        //       else
+        //       {
+        //           // Run the second query
+        //           db.pool.query(deleteBsg_People, [personID], function(error, rows, fields) {
+  
+        //               if (error) {
+        //                   console.log(error);
+        //                   res.sendStatus(400);
+        //               } else {
+        //                   res.sendStatus(204);
+        //               }
+        //           })
+        //       }
+
+        // Run the query
+        db.pool.query(delete_equipment, [equipmentID], function(error, rows, fields) {
+  
+            if (error) {
+                console.log(error);
+                res.sendStatus(400);
+            } else {
+                res.sendStatus(204);
+            }
+  })});
+
 /*
     LISTENER
 */
