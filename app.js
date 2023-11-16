@@ -40,11 +40,38 @@ app.get(['/', '/index'], function(req, res)
 
 app.get('/equipment', function(req, res)
     {
-        let query1 = "SELECT * FROM Equipment;"; 
+        let query1 = "SELECT * FROM Equipment;";
+
+        // If there is no query string, we just perform a basic SELECT
+        if (req.query.name === undefined)
+        {
+            query1 = "SELECT * FROM Equipment;";
+        }
+
+        // If there is a query string, we assume this is a search, and return desired results
+        else
+        {
+            query1 = `SELECT * FROM Equipment WHERE equipmentName LIKE "${req.query.name}%"`
+        }
+
+        // Query 2 is the same in both cases
+        let query2 = "SELECT * FROM Equipment;";
         
+        // Run the 1st query
         db.pool.query(query1, function(error, rows, fields){
-            res.render('equipment', {data: rows});                 
-        })   
+        
+            // Save all equipment
+            let all_equipment = rows;
+            
+            // Run the second query
+            db.pool.query(query2, (error, rows, fields) => {
+            
+                // Save equipment subset
+                let subset_equipment = rows;
+
+                return res.render('equipment', {data: all_equipment, search_data: subset_equipment});
+            })
+        })  
     });
 
 app.get('/components', function(req, res)
