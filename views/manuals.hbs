@@ -2,7 +2,7 @@
 <h1>Manuals</h1>
 
 {{!-- Create a table --}}
-<table>
+<table id="manuals-table">
 
     {{!-- Header section --}}
     <thead>
@@ -31,3 +31,18 @@
         {{/each}}
     </tbody>
 </table>
+
+{{!-- Add Data to Table Form --}}
+<h2>Add New Manual</h2>
+<form id="add-manual-form-ajax">
+    <label for="input-name">Manual Name: </label>
+    <input type="text" name="input-name" id="input-name">
+    
+    <label for="input-link">Link: </label>
+    <input type="text" name="input-link" id="input-link">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_manual.js"></script>
