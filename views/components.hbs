@@ -2,7 +2,7 @@
 <h1>Components</h1>
 
 {{!-- Create a table --}}
-<table>
+<table id="components-table">
 
     {{!-- Header section --}}
     <thead>
@@ -33,3 +33,24 @@
         {{/each}}
     </tbody>
 </table>
+
+{{!-- Add Data to Table Form --}}
+<h2>Add New Component</h2>
+<form id="add-component-form-ajax">
+    <label for="input-name">Component Name: </label>
+    <input type="text" name="input-name" id="input-name">
+    
+    <label for="input-description">Description: </label>
+    <input type="text" name="input-description" id="input-description">
+
+    <label for="input-partID">Part ID: </label>
+    <input type="number" name="input-partID" id="input-partID">
+
+    <label for="input-notes">Notes: </label>
+    <input type="text" name="input-notes" id="input-notes">
+
+    <input type="submit">
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_component.js"></script>
