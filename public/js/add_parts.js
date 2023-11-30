@@ -99,8 +99,8 @@ addRowToPartsTable = (data) => {
     row.appendChild(nameCell);
     row.appendChild(manufacturerCell);
     row.appendChild(manualCell);
-    row.appendChild(notesCell);
     row.appendChild(storeroomCell);
+    row.appendChild(notesCell);
     row.appendChild(deleteCell);
 
     // Add a row attribute for deletion

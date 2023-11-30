@@ -155,8 +155,9 @@ app.post('/add-equipment-ajax', function(req, res)
 // Adding new data for parts
 app.post('/add-part-ajax', function(req, res) {
     let data = req.body;
+    console.log(data)
     let query = `INSERT INTO Parts (partName, partManufacturer, partManual, partNotes, storeroomNumber) VALUES ('${data.name}', ${data.manufacturer}, ${data.manual || 'NULL'}, '${data.notes}', ${data.storeroomNumber})`;
-
+    console.log(query)
     db.pool.query(query, function(error, rows, fields){
         if (error) {
             console.log(error);

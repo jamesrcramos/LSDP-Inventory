@@ -5,8 +5,8 @@ function deleteParts(partID){
     };
 
     $.ajax({
-        url: link,
         type: 'DELETE',
+        url: link,
         data: JSON.stringify(data),
         contentType: "application/json; charset=utf-8",
         success: function(result) {
