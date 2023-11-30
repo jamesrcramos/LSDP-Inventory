@@ -176,6 +176,27 @@ app.post('/add-part-ajax', function(req, res) {
     });
 });
 
+app.post('/add-manufacturer-ajax', function(req, res) {
+    let data = req.body;
+    let query = `INSERT INTO Manufacturers (manufacturerName, manufacturerPhone, manufacturerEmail, manufacturerNotes) VALUES ('${data.name}', '${data.phone}', '${data.email}', '${data.notes}')`;
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            let query2 = "SELECT * FROM Manufacturers;";
+            db.pool.query(query2, function(error, rows, fields){
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
 // (Optional) Deleting data for parts
 app.delete('/delete-part-ajax/', function(req,res){
     let data = req.body;
@@ -235,6 +256,20 @@ app.delete('/delete-equipment-ajax/', function(req,res,next){
                 res.sendStatus(204);
             }
   })});
+
+app.delete('/delete-manufacturer-ajax/', function(req,res){
+    let data = req.body;
+    let manufacturerID = parseInt(data.id);
+    let deleteQuery = `DELETE FROM Manufacturers WHERE manufacturerID = ?`;
+    db.pool.query(deleteQuery, [manufacturerID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
 
 /*
     LISTENER
