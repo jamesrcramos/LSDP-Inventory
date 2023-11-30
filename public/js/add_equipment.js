@@ -66,7 +66,6 @@ addRowToTable = (data) => {
     let idCell = document.createElement("TD");
     let nameCell = document.createElement("TD");
     let notesCell = document.createElement("TD");
-
     let deleteCell = document.createElement("TD");
 
     // Fill the cells with correct data

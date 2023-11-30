@@ -150,6 +150,49 @@ app.post('/add-equipment-ajax', function(req, res)
     })
 });
 
+// Existing code remains unchanged
+
+// Adding new data for parts
+app.post('/add-part-ajax', function(req, res) {
+    let data = req.body;
+    let query = `INSERT INTO Parts (partName, partManufacturer, partManual, partNotes, storeroomNumber) VALUES ('${data.name}', ${data.manufacturer}, ${data.manual || 'NULL'}, '${data.notes}', ${data.storeroomNumber})`;
+
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            let query2 = "SELECT * FROM Parts;";
+            db.pool.query(query2, function(error, rows, fields){
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+// (Optional) Deleting data for parts
+app.delete('/delete-part-ajax/', function(req,res){
+    let data = req.body;
+    let partID = parseInt(data.id);
+    let deleteQuery = `DELETE FROM Parts WHERE partID = ?`;
+
+    db.pool.query(deleteQuery, [partID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+// Existing listener code remains unchanged
+
 // deleting data
 app.delete('/delete-equipment-ajax/', function(req,res,next){
     let data = req.body;
