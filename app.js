@@ -83,6 +83,12 @@ app.get('/components', function(req, res)
         })   
     });
 
+app.get('/equipment-components', function(req, res) {
+    let query = "SELECT * FROM Equipment_Components;";
+    db.pool.query(query, function(error, rows, fields){
+        res.render('equipment_components', {data: rows});
+    })
+});
 app.get('/parts', function(req, res)
     {
         let query3 = "SELECT * FROM Parts;"; 
@@ -213,6 +219,18 @@ app.delete('/delete-part-ajax/', function(req,res){
     });
 });
 
+app.post('/add-equipment-component-ajax', function(req, res) {
+    let data = req.body;
+    let query = `INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (${data.equipmentID}, ${data.componentID})`;
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(200);
+        }
+    });
+});
 // Existing listener code remains unchanged
 
 // deleting data
