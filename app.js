@@ -89,6 +89,7 @@ app.get('/equipment-components', function(req, res) {
         res.render('equipment_components', {data: rows});
     })
 });
+
 app.get('/parts', function(req, res)
     {
         let query3 = "SELECT * FROM Parts;"; 
@@ -156,8 +157,6 @@ app.post('/add-equipment-ajax', function(req, res)
     })
 });
 
-// Existing code remains unchanged
-
 // Adding new data for parts
 app.post('/add-part-ajax', function(req, res) {
     let data = req.body;
@@ -203,22 +202,6 @@ app.post('/add-manufacturer-ajax', function(req, res) {
     });
 });
 
-// (Optional) Deleting data for parts
-app.delete('/delete-part-ajax/', function(req,res){
-    let data = req.body;
-    let partID = parseInt(data.id);
-    let deleteQuery = `DELETE FROM Parts WHERE partID = ?`;
-
-    db.pool.query(deleteQuery, [partID], function(error, rows, fields) {
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            res.sendStatus(204);
-        }
-    });
-});
-
 app.post('/add-equipment-component-ajax', function(req, res) {
     let data = req.body;
     let query = `INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (${data.equipmentID}, ${data.componentID})`;
@@ -231,7 +214,91 @@ app.post('/add-equipment-component-ajax', function(req, res) {
         }
     });
 });
-// Existing listener code remains unchanged
+
+app.post('/add-manual-ajax', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Manuals (manualName, manualLink) VALUES ('${data.name}', '${data.link}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // If there was no error, perform a SELECT * on Manuals
+            query2 = `SELECT * FROM Manuals;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
+
+app.post('/add-component-ajax', function(req, res) 
+{
+    // Capture the incoming data and parse it back to a JS object
+    let data = req.body;
+
+    // Capture NULL values
+    let partID = parseInt(data.partID);
+    if (isNaN(partID))
+    {
+        partID = 'NULL'
+    }
+
+    // Create the query and run it on the database
+    query1 = `INSERT INTO Components (componentName, componentDescription, partID, componentNotes) VALUES ('${data.name}', '${data.description}', ${partID}, '${data.notes}')`;
+    db.pool.query(query1, function(error, rows, fields){
+
+        // Check to see if there was an error
+        if (error) {
+
+            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+            console.log(error)
+            res.sendStatus(400);
+        }
+        else
+        {
+            // If there was no error, perform a SELECT * on Components
+            query2 = `SELECT * FROM Components;`;
+            db.pool.query(query2, function(error, rows, fields){
+
+                // If there was an error on the second query, send a 400
+                if (error) {
+                    
+                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+                    console.log(error);
+                    res.sendStatus(400);
+                }
+                // If all went well, send the results of the query back.
+                else
+                {
+                    res.send(rows);
+                }
+            })
+        }
+    })
+});
 
 // deleting data
 app.delete('/delete-equipment-ajax/', function(req,res,next){
@@ -280,6 +347,21 @@ app.delete('/delete-manufacturer-ajax/', function(req,res){
     let manufacturerID = parseInt(data.id);
     let deleteQuery = `DELETE FROM Manufacturers WHERE manufacturerID = ?`;
     db.pool.query(deleteQuery, [manufacturerID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+app.delete('/delete-part-ajax/', function(req,res){
+    let data = req.body;
+    let partID = parseInt(data.id);
+    let deleteQuery = `DELETE FROM Parts WHERE partID = ?`;
+
+    db.pool.query(deleteQuery, [partID], function(error, rows, fields) {
         if (error) {
             console.log(error);
             res.sendStatus(400);
