@@ -5,13 +5,13 @@ function deleteEquipment(equipmentID) {
     };
   
     $.ajax({
-      url: link,
-      type: 'DELETE',
-      data: JSON.stringify(data),
-      contentType: "application/json; charset=utf-8",
-      success: function(result) {
+        url: link,
+        type: 'DELETE',
+        data: JSON.stringify(data),
+        contentType: "application/json; charset=utf-8",
+        success: function(result) {
         deleteRow(equipmentID);
-    }
+      }
     });
   }
   

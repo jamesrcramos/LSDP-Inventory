@@ -83,6 +83,13 @@ app.get('/components', function(req, res)
         })   
     });
 
+app.get('/equipment-components', function(req, res) {
+    let query = "SELECT * FROM Equipment_Components;";
+    db.pool.query(query, function(error, rows, fields){
+        res.render('equipment_components', {data: rows});
+    })
+});
+
 app.get('/parts', function(req, res)
     {
         let query3 = "SELECT * FROM Parts;"; 
@@ -148,6 +155,64 @@ app.post('/add-equipment-ajax', function(req, res)
             })
         }
     })
+});
+
+// Adding new data for parts
+app.post('/add-part-ajax', function(req, res) {
+    let data = req.body;
+    console.log(data)
+    let query = `INSERT INTO Parts (partName, partManufacturer, partManual, partNotes, storeroomNumber) VALUES ('${data.name}', ${data.manufacturer}, ${data.manual || 'NULL'}, '${data.notes}', ${data.storeroomNumber})`;
+    console.log(query)
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            let query2 = "SELECT * FROM Parts;";
+            db.pool.query(query2, function(error, rows, fields){
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+app.post('/add-manufacturer-ajax', function(req, res) {
+    let data = req.body;
+    let query = `INSERT INTO Manufacturers (manufacturerName, manufacturerPhone, manufacturerEmail, manufacturerNotes) VALUES ('${data.name}', '${data.phone}', '${data.email}', '${data.notes}')`;
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            let query2 = "SELECT * FROM Manufacturers;";
+            db.pool.query(query2, function(error, rows, fields){
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows);
+                }
+            });
+        }
+    });
+});
+
+app.post('/add-equipment-component-ajax', function(req, res) {
+    let data = req.body;
+    let query = `INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (${data.equipmentID}, ${data.componentID})`;
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(200);
+        }
+    });
 });
 
 app.post('/add-manual-ajax', function(req, res) 
@@ -276,6 +341,35 @@ app.delete('/delete-equipment-ajax/', function(req,res,next){
                 res.sendStatus(204);
             }
   })});
+
+app.delete('/delete-manufacturer-ajax/', function(req,res){
+    let data = req.body;
+    let manufacturerID = parseInt(data.id);
+    let deleteQuery = `DELETE FROM Manufacturers WHERE manufacturerID = ?`;
+    db.pool.query(deleteQuery, [manufacturerID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+app.delete('/delete-part-ajax/', function(req,res){
+    let data = req.body;
+    let partID = parseInt(data.id);
+    let deleteQuery = `DELETE FROM Parts WHERE partID = ?`;
+
+    db.pool.query(deleteQuery, [partID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
 
 /*
     LISTENER
