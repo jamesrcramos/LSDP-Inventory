@@ -35,3 +35,39 @@
   --switch-color: var(--primary-inverse);
   --switch-checked-background-color: var(--primary);
 }
+
+/* Container Styles */
+.content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%; /* Ensure the parent container takes the full width */
+}
+
+.table-container, .form-container {
+    box-sizing: border-box; 
+    width: 50%; /* Set each container to take up half the screen */
+    margin: 0;
+    padding: 0; 
+}
+
+.table-container {
+    margin-right: 1%; /* Add margin to the right of the table container */
+}
+
+.form-container {
+    margin-left: 1%; /* Add margin to the left of the form container */
+}
+
+/* Styles for smaller screens */
+@media only screen and (max-width: 1800px) {
+    .content {
+        display: block;
+    }
+
+    .table-container, .form-container {
+        box-sizing: border-box;
+        width: 100%;
+        /* Adjust padding and margin as needed */
+    }
+}
+
