@@ -2,6 +2,20 @@
 
 <h1>Equipment-Components</h1>
 
+<form id="add-equipment-component-form-ajax">
+    <label for="select-equipment">Select Equipment:</label>
+    <select id="select-equipment" name="equipmentID">
+    </select><br>
+
+    <label for="select-component">Select Component:</label>
+    <select id="select-component" name="componentID">
+    </select><br>
+
+    <input type="submit" value="Add Relationship">
+</form>
+
+<script src="./js/add_equipment_component.js"></script>
+
 <table id="equipment-components-table" role="grid">
     <thead>
     <tr>
@@ -24,18 +38,4 @@
     {{/each}}
     </tbody>
 </table>
-
-<form id="add-equipment-component-form-ajax">
-    <label for="select-equipment">Select Equipment:</label>
-    <select id="select-equipment" name="equipmentID">
-    </select><br>
-
-    <label for="select-component">Select Component:</label>
-    <select id="select-component" name="componentID">
-    </select><br>
-
-    <input type="submit" value="Add Relationship">
-</form>
-
-<script src="./js/add_equipment_component.js"></script>
 
