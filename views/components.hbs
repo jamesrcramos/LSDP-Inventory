@@ -56,5 +56,31 @@
     <input type="submit">
 </form>
 
+{{!-- Update Table Data Form --}}
+<h2>Update Component</h2>
+<form id="update-component-form-ajax">
+
+    <label for="input-component">Component: </label>
+    <select name="input-component" id="mySelect">
+        <option value="test">Select a Component</option>
+        {{#each data}}
+        <option value="{{this.componentID}}">{{this.componentName}}</option>
+        {{/each}}
+    </select>
+
+    <label for="input-part">Part: </label>
+    <select name="input-part" id="input-part-update">
+        <option>Select a Part</option>
+        {{#each parts}}
+        <option value="{{this.partID}}">{{this.partName}}</option>
+        {{/each}}
+        <option value="">NULL</option>
+    </select>
+    <input type="submit">
+
+</form>
+
+<script src="./js/update_component.js"></script>
+
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_component.js"></script>

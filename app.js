@@ -402,6 +402,42 @@ app.delete('/delete-part-ajax/', function(req,res){
     });
 });
 
+// updating data
+app.put('/put-component-ajax', function(req,res,next){
+    let data = req.body;
+  
+    let part = data.part === "" ? null : parseInt(data.part);
+    let component = parseInt(data.component);
+  
+    let queryUpdatePart = `UPDATE Components SET partID = ? WHERE Components.componentId = ?`;
+    let selectPart = `SELECT * FROM Parts WHERE partId = ?`
+  
+          // Run the 1st query
+          db.pool.query(queryUpdatePart, [part, component], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the people's
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectPart, [part], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
+
 /*
     LISTENER
 */

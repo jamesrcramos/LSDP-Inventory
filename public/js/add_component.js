@@ -71,7 +71,7 @@ addRowToTable = (data) => {
     let parsedData = JSON.parse(data);
     let newRow = parsedData[parsedData.length - 1]
 
-    // Create a row and 4 cells
+    // Create a row and its cells
     let row = document.createElement("TR");
     let idCell = document.createElement("TD");
     let nameCell = document.createElement("TD");
@@ -95,4 +95,10 @@ addRowToTable = (data) => {
     
     // Add the row to the table
     currentTable.appendChild(row);
+
+    let selectMenu = document.getElementById("mySelect");
+    let option = document.createElement("option");
+    option.text = newRow.componentName;
+    option.value = newRow.componentID;
+    selectMenu.addEventListener(option);
 }
