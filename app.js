@@ -76,8 +76,13 @@ app.get('/equipment', function(req, res)
 
     app.get('/components', function(req, res)
     {
-        let query1 = "SELECT * FROM Components;";
-        
+        let query1 = `
+            SELECT Components.componentID, Components.componentName,
+                   Components.componentDescription, Parts.partName, Components.componentNotes
+            FROM Components
+            JOIN Parts ON Components.partID = Parts.partID
+            ORDER BY Components.componentID`;
+
         let query2 = "SELECT * FROM Parts;";
         
         db.pool.query(query1, function(error, rows, fields){
