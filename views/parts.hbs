@@ -1,101 +1,108 @@
 <!-- index.hbs -->
 <h1>Parts</h1>
 
-{{!-- Create a table --}}
-<table id="parts-table" role="grid">
+<div class="content">
+    <div class="table-container">
+        {{!-- Create a table --}}
+        <table id="parts-table" role="grid">
 
-    {{!-- Header section --}}
-    <thead>
-    <tr>
-        <th>Part ID</th>
-        <th>Part Name</th>
-        <th>Part Manufacturer</th>
-        <th>Part Manual</th>
-        <th>Storeroom Number</th>
-        <th>Part Notes</th>
-        <th>Actions</th> <!-- Added column for actions like delete -->
-    </tr>
-    </thead>
+            {{!-- Header section --}}
+            <thead>
+            <tr>
+                <th>Part ID</th>
+                <th>Part Name</th>
+                <th>Part Manufacturer</th>
+                <th>Part Manual</th>
+                <th>Storeroom Number</th>
+                <th>Part Notes</th>
+                <th>Actions</th> <!-- Added column for actions like delete -->
+            </tr>
+            </thead>
 
-    {{!-- Body section --}}
-    <tbody>
-    {{!-- For each row, print the attributes in order --}}
-    {{#each data}}
-        <tr>
-            <td>{{this.partID}}</td>
-            <td>{{this.partName}}</td>
-            <td>{{this.manufacturerName}}</td>
-            <td>{{this.manualName}}</td>
-            <td>{{this.storeroomNumber}}</td>
-            <td>{{this.partNotes}}</td>
-            <td>
-                <!-- Add buttons for actions -->
-                <button onclick="deleteParts({{this.partID}})">Delete</button>
-            </td>
-        </tr>
-    {{/each}}
-    </tbody>
-</table>
+            {{!-- Body section --}}
+            <tbody>
+            {{!-- For each row, print the attributes in order --}}
+            {{#each data}}
+                <tr>
+                    <td>{{this.partID}}</td>
+                    <td>{{this.partName}}</td>
+                    <td>{{this.manufacturerName}}</td>
+                    <td>{{this.manualName}}</td>
+                    <td>{{this.storeroomNumber}}</td>
+                    <td>{{this.partNotes}}</td>
+                    <td>
+                        <!-- Add buttons for actions -->
+                        <button onclick="deleteParts({{this.partID}})">Delete</button>
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
 
-{{!-- Form for Adding New Part --}}
-<h2>Add New Part</h2>
-<form id="add-parts-form-ajax">
-    <label for="input-part-name">Part Name:</label>
-    <input type="text" id="input-part-name" name="partName"><br>
+    <div class="forms-container">
+        {{!-- Form for Adding New Part --}}
+        <h2>Add New Part</h2>
+        <form id="add-parts-form-ajax">
+            <label for="input-part-name">Part Name:</label>
+            <input type="text" id="input-part-name" name="partName"><br>
 
-    {{!-- <label for="input-part-manufacturer">Part Manufacturer:</label>
-    <input type="number" id="input-part-manufacturer" name="partManufacturer"><br> --}}
-    <select name="input-part-manufacturer" id="input-part-manufacturer-ajax">
-        <option value="">Part Manufacturer:</option>
-        {{#each manufacturers}}
-        <option value="{{this.manufacturerID}}">{{this.manufacturerName}}</option>
-        {{/each}}
-    </select>
+            {{!-- <label for="input-part-manufacturer">Part Manufacturer:</label>
+            <input type="number" id="input-part-manufacturer" name="partManufacturer"><br> --}}
+            <select name="input-part-manufacturer" id="input-part-manufacturer-ajax">
+                <option value="">Part Manufacturer:</option>
+                {{#each manufacturers}}
+                <option value="{{this.manufacturerID}}">{{this.manufacturerName}}</option>
+                {{/each}}
+            </select>
 
-    {{!-- <label for="input-part-manual">Part Manual:</label>
-    <input type="number" id="input-part-manual" name="partManual"><br> --}}
-    <select name="input-part-manual" id="input-part-manual-ajax">
-        <option value="">Part Manual:</option>
-        {{#each manuals}}
-        <option value="{{this.manualID}}">{{this.manualName}}</option>
-        {{/each}}
-    </select>
+            {{!-- <label for="input-part-manual">Part Manual:</label>
+            <input type="number" id="input-part-manual" name="partManual"><br> --}}
+            <select name="input-part-manual" id="input-part-manual-ajax">
+                <option value="">Part Manual:</option>
+                {{#each manuals}}
+                <option value="{{this.manualID}}">{{this.manualName}}</option>
+                {{/each}}
+            </select>
 
-    <label for="input-part-notes">Part Notes:</label>
-    <input type="text" id="input-part-notes" name="partNotes"><br>
+            <label for="input-part-notes">Part Notes:</label>
+            <input type="text" id="input-part-notes" name="partNotes"><br>
 
-    <label for="input-storeroom-number">Storeroom Number:</label>
-    <input type="number" id="input-storeroom-number" name="storeroomNumber"><br>
+            <label for="input-storeroom-number">Storeroom Number:</label>
+            <input type="number" id="input-storeroom-number" name="storeroomNumber"><br>
 
-    <input type="submit" value="Add Part">
-</form>
+            <input type="submit" value="Add Part">
+        </form>
 
+        {{!-- Search Table for Data Form --}}
 
-{{!-- Search Table for Data Form --}}
+        {{!-- Update Part Form --}}
+        <h2>Update Part</h2>
+        <form id="update-parts-form-ajax">
+        <label for="input-part-id">Part ID:</label>
+        <input type="number" id="input-part-id" name="partID"><br>
 
-{{!-- Update Part Form --}}
-<h2>Update Part</h2>
-<form id="update-parts-form-ajax">
-    <label for="input-part-id">Part ID:</label>
-    <input type="number" id="input-part-id" name="partID"><br>
+        <label for="input-part-name">Part Name:</label>
+        <input type="text" id="input-part-name" name="partName"><br>
 
-    <label for="input-part-name">Part Name:</label>
-    <input type="text" id="input-part-name" name="partName"><br>
+        <label for="input-part-manufacturer">Part Manufacturer:</label>
+        <input type="number" id="input-part-manufacturer" name="partManufacturer"><br>
 
-    <label for="input-part-manufacturer">Part Manufacturer:</label>
-    <input type="number" id="input-part-manufacturer" name="partManufacturer"><br>
+        <label for="input-part-manual">Part Manual:</label>
+        <input type="number" id="input-part-manual" name="partManual"><br>
 
-    <label for="input-part-manual">Part Manual:</label>
-    <input type="number" id="input-part-manual" name="partManual"><br>
+        <label for="input-part-notes">Part Notes:</label>
+        <input type="text" id="input-part-notes" name="partNotes"><br>
 
-    <label for="input-part-notes">Part Notes:</label>
-    <input type="text" id="input-part-notes" name="partNotes"><br>
+        <label for="input-storeroom-number">Storeroom Number:</label>
+        <input type="number" id="input-storeroom-number" name="storeroomNumber"><br>
 
-    <label for="input-storeroom-number">Storeroom Number:</label>
-    <input type="number" id="input-storeroom-number" name="storeroomNumber"><br>
+        <input type="submit" value="Update Part">
+        
+        </form>
+    </div>
+</div>
 
-    <input type="submit" value="Update Part">
-</form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="./js/delete_parts.js"></script>
 <script src="./js/add_parts.js"></script>
