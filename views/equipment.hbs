@@ -37,6 +37,16 @@
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/delete_equipment.js"></script>
 
+{{!-- Search Table for Data Form --}}
+<h2>Search</h2>
+<form id="search-equipment-html" method='GET' action='/equipment'>
+    <label for="input-name">Search by Equipment Name: </label>
+    <input type="text" name="name" id="input-equipment_name-html-search">
+    
+    <input type="submit">
+    <a href='/'><button>Reset</button></a>
+</form>
+
 {{!-- Add Data to Table Form --}}
 <h2>Add New Equipment</h2>
 <form id="add-equipment-form-ajax">
@@ -50,16 +60,6 @@
 </form>
 {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_equipment.js"></script>
-
-{{!-- Search Table for Data Form --}}
-<h2>Search</h2>
-<form id="search-equipment-html" method='GET' action='/equipment'>
-    <label for="input-name">Search by Equipment Name: </label>
-    <input type="text" name="name" id="input-equipment_name-html-search">
-    
-    <input type="submit">
-    <a href='/'><button>Reset</button></a>
-</form>
 
 {{!-- Update Row in Table Form --}}
 <h2>Update an Equipment</h2>
