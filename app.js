@@ -95,7 +95,6 @@ app.get('/equipment', function(req, res)
         });   
     });
     
-
 app.get('/equipment-components', function(req, res) {
     let query = "SELECT * FROM Equipment_Components;";
     db.pool.query(query, function(error, rows, fields){
@@ -105,7 +104,13 @@ app.get('/equipment-components', function(req, res) {
 
 app.get('/parts', function(req, res)
     {
-        let query1 = "SELECT * FROM Parts;"; 
+        let query1 = `
+            SELECT Parts.partID, Parts.partName, Manufacturers.manufacturerName,
+            Manuals.manualName, Parts.partNotes, Parts.storeroomNumber
+            FROM Parts
+            LEFT JOIN Manufacturers ON Manufacturers.manufacturerID = Parts.partManufacturer
+            LEFT JOIN Manuals ON Manuals.manualID = Parts.partManual
+            ORDER BY Parts.partID`;
 
         let query2 = "SELECT * FROM Manufacturers";
 
