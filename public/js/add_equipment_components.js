@@ -1,3 +1,4 @@
+
 let addEquipmentComponentForm = document.getElementById('add-equipment-component-form-ajax');
 
 addEquipmentComponentForm.addEventListener("submit", function (e) {

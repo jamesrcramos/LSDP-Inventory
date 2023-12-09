@@ -14,12 +14,12 @@
     <input type="submit" value="Add Relationship">
 </form>
 
-<script src="./js/add_equipment_component.js"></script>
 
-<table id="equipment-components-table" role="grid">
+
+<table id="equipment-components-table">
     <thead>
     <tr>
-        <th>Equipment-Component ID</th>
+        <th>ID</th>
         <th>Equipment Name</th>
         <th>Component Name</th>
         <th>Actions</th>
@@ -27,15 +27,16 @@
     </thead>
     <tbody>
     {{#each data}}
-    <tr>
-        <td>{{this.equipmentComponentID}}</td>
-        <td>{{this.equipmentName}}</td>
-        <td>{{this.componentName}}</td>
-        <td>
-            <button onclick="deleteEquipmentComponent({{this.equipmentComponentID}})">Delete</button>
-        </td>
-    </tr>
+        <tr>
+            <td>{{this.equipmentComponentID}}</td>
+            <td>{{this.equipmentName}}</td>
+            <td>{{this.componentName}}</td>
+            <td>
+                <button onclick="deleteEquipmentComponent({{this.equipmentComponentID}})">Delete</button>
+            </td>
+        </tr>
     {{/each}}
     </tbody>
 </table>
 
+<script src="./js/add_equipment_component.js"></script>

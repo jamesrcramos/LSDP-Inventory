@@ -84,10 +84,20 @@ app.get('/components', function(req, res)
     });
 
 app.get('/equipment-components', function(req, res) {
-    let query = "SELECT * FROM Equipment_Components;";
+    let query = `
+        SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
+        FROM Equipment_Components 
+        JOIN Equipment ON Equipment_Components.equipmentID = Equipment.equipmentID 
+        JOIN Components ON Equipment_Components.componentID = Components.componentID;`;
+
     db.pool.query(query, function(error, rows, fields){
-        res.render('equipment_components', {data: rows});
-    })
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            res.render('equipment_components', {data: rows});
+        }
+    });
 });
 
 app.get('/parts', function(req, res)
