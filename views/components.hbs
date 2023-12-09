@@ -43,8 +43,12 @@
     <label for="input-description">Description: </label>
     <input type="text" name="input-description" id="input-description">
 
-    <label for="input-partID">Part ID: </label>
-    <input type="number" name="input-partID" id="input-partID">
+    <select name="input-parts" id="input-part-ajax">
+        <option value="">Part:</option>
+        {{#each parts}}
+        <option value="{{this.partID}}">{{this.partName}}</option>
+        {{/each}}
+    </select>
 
     <label for="input-notes">Notes: </label>
     <input type="text" name="input-notes" id="input-notes">

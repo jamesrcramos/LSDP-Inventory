@@ -74,14 +74,22 @@ app.get('/equipment', function(req, res)
         })  
     });
 
-app.get('/components', function(req, res)
+    app.get('/components', function(req, res)
     {
-        let query2 = "SELECT * FROM Components;"; 
+        let query1 = "SELECT * FROM Components;";
         
-        db.pool.query(query2, function(error, rows, fields){
-            res.render('components', {data: rows});                 
-        })   
+        let query2 = "SELECT * FROM Parts;";
+        
+        db.pool.query(query1, function(error, rows, fields){
+            let components = rows;
+
+            db.pool.query(query2, (error, rows, fields) => {
+                let parts = rows;
+                res.render('components', {data: components, parts: parts}); 
+            })                
+        });   
     });
+    
 
 app.get('/equipment-components', function(req, res) {
     let query = "SELECT * FROM Equipment_Components;";
