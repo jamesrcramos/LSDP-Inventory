@@ -6,11 +6,23 @@
     <label for="input-part-name">Part Name:</label>
     <input type="text" id="input-part-name" name="partName"><br>
 
-    <label for="input-part-manufacturer">Part Manufacturer:</label>
-    <input type="number" id="input-part-manufacturer" name="partManufacturer"><br>
+    {{!-- <label for="input-part-manufacturer">Part Manufacturer:</label>
+    <input type="number" id="input-part-manufacturer" name="partManufacturer"><br> --}}
+    <select name="input-part-manufacturer" id="input-part-manufacturer-ajax">
+        <option value="">Part Manufacturer:</option>
+        {{#each manufacturers}}
+        <option value="{{this.manufacturerID}}">{{this.manufacturerName}}</option>
+        {{/each}}
+    </select>
 
-    <label for="input-part-manual">Part Manual:</label>
-    <input type="number" id="input-part-manual" name="partManual"><br>
+    {{!-- <label for="input-part-manual">Part Manual:</label>
+    <input type="number" id="input-part-manual" name="partManual"><br> --}}
+    <select name="input-part-manual" id="input-part-manual-ajax">
+        <option value="">Part Manual:</option>
+        {{#each manuals}}
+        <option value="{{this.manualID}}">{{this.manualName}}</option>
+        {{/each}}
+    </select>
 
     <label for="input-part-notes">Part Notes:</label>
     <input type="text" id="input-part-notes" name="partNotes"><br>

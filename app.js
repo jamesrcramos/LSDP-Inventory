@@ -100,10 +100,23 @@ app.get('/equipment-components', function(req, res) {
 
 app.get('/parts', function(req, res)
     {
-        let query3 = "SELECT * FROM Parts;"; 
+        let query1 = "SELECT * FROM Parts;"; 
+
+        let query2 = "SELECT * FROM Manufacturers";
+
+        let query3 = "SELECT * FROM Manuals";
         
-        db.pool.query(query3, function(error, rows, fields){
-            res.render('parts', {data: rows});                 
+        db.pool.query(query1, function(error, rows, fields){
+            let parts = rows;
+            
+            db.pool.query(query2, (error, rows, fields) => {
+                let manufacturers = rows;
+
+                db.pool.query(query3, (error, rows, fields) => {
+                    let manuals = rows;
+                    res.render('parts', {data: parts, manufacturers: manufacturers, manuals: manuals}); 
+                })     
+            })                    
         })   
     });
 
