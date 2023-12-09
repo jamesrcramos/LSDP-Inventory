@@ -212,19 +212,6 @@ app.post('/add-manufacturer-ajax', function(req, res) {
     });
 });
 
-app.post('/add-equipment-component-ajax', function(req, res) {
-    let data = req.body;
-    let query = `INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (${data.equipmentID}, ${data.componentID})`;
-    db.pool.query(query, function(error, rows, fields){
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            res.sendStatus(200);
-        }
-    });
-});
-
 app.post('/add-manual-ajax', function(req, res) 
 {
     // Capture the incoming data and parse it back to a JS object
@@ -310,6 +297,20 @@ app.post('/add-component-ajax', function(req, res)
     })
 });
 
+// adding new data for equipment components
+app.post('/add-equipment-component-ajax', function(req, res) {
+    let data = req.body;
+    let query = `INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (${data.equipmentID}, ${data.componentID})`;
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(200);
+        }
+    });
+});
+
 // deleting data
 app.delete('/delete-equipment-ajax/', function(req,res,next){
     let data = req.body;
@@ -381,6 +382,21 @@ app.delete('/delete-part-ajax/', function(req,res){
     });
 });
 
+// deleting data for equipment components
+app.delete('/delete-equipment-component-ajax/', function(req,res){
+    let data = req.body;
+    let equipmentComponentID = parseInt(data.id);
+    let deleteQuery = `DELETE FROM Equipment_Components WHERE equipmentComponentID = ?`;
+
+    db.pool.query(deleteQuery, [equipmentComponentID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
 /*
     LISTENER
 */
