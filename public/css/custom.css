@@ -43,7 +43,7 @@
     width: 100%; /* Ensure the parent container takes the full width */
 }
 
-.table-container, .form-container {
+.table-container, .forms-container {
     box-sizing: border-box; 
     width: 50%; /* Set each container to take up half the screen */
     margin: 0;
@@ -54,7 +54,7 @@
     margin-right: 1%; /* Add margin to the right of the table container */
 }
 
-.form-container {
+.forms-container {
     margin-left: 1%; /* Add margin to the left of the form container */
 }
 
@@ -64,7 +64,7 @@
         display: block;
     }
 
-    .table-container, .form-container {
+    .table-container, .forms-container {
         box-sizing: border-box;
         width: 100%;
         /* Adjust padding and margin as needed */
