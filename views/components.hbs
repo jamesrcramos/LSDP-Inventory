@@ -2,6 +2,53 @@
 
 <h1>Components</h1>
 
+{{!-- Create a table --}}
+<table id="components-table">
+
+    <thead>
+        <tr>
+            {{#each data.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the attributes in order --}}
+        {{#each data}}
+        <tr>
+            <td>{{this.componentID}}</td>
+            <td>{{this.componentName}}</td>
+            <td>{{this.componentDescription}}</td>
+            <td>{{this.partID}}</td>
+            <td>{{this.componentNotes}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+{{!-- Add Data to Table Form --}}
+<h2>Add New Component</h2>
+<form id="add-component-form-ajax">
+    <label for="input-name">Component Name: </label>
+    <input type="text" name="input-name" id="input-name">
+    
+    <label for="input-description">Description: </label>
+    <input type="text" name="input-description" id="input-description">
+
+    <label for="input-partID">Part ID: </label>
+    <input type="number" name="input-partID" id="input-partID">
+
+    <label for="input-notes">Notes: </label>
+    <input type="text" name="input-notes" id="input-notes">
+
+    <input type="submit">
+</form>
+
 <div class="content">
     <div class="table-container">
         {{!-- Create a table --}}

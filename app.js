@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT        = 53799;                 // Set a port number at the top so it's easy to change in the future
+PORT        = 3000          // Set a port number at the top so it's easy to change in the future
 
 // app.js
 const { engine } = require('express-handlebars');
@@ -37,6 +37,49 @@ app.get(['/', '/index'], function(req, res)
     {  
         res.render('index');
     });
+
+// API endpoint for fetching equipment
+app.get('/api/equipment', function(req, res) {
+    let query = "SELECT equipmentID AS id, equipmentName AS name FROM Equipment;";
+    db.pool.query(query, function(error, results) {
+        if (error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// API endpoint for fetching components
+app.get('/api/components', function(req, res) {
+    let query = "SELECT componentID AS id, componentName AS name FROM Components;";
+    db.pool.query(query, function(error, results) {
+        if (error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
+// API endpoint for fetching equipment components
+
+app.get('/api/equipment-components', function(req, res) {
+    let query = `
+        SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
+        FROM Equipment_Components 
+        JOIN Equipment ON Equipment_Components.equipmentID = Equipment.equipmentID 
+        JOIN Components ON Equipment_Components.componentID = Components.componentID
+        ORDER BY Equipment_Components.equipmentComponentID;`;
+
+    db.pool.query(query, function(error, results) {
+        if (error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.json(results);
+        }
+    });
+});
 
 app.get('/equipment', function(req, res)
     {
@@ -96,10 +139,21 @@ app.get('/equipment', function(req, res)
     });
     
 app.get('/equipment-components', function(req, res) {
-    let query = "SELECT * FROM Equipment_Components;";
+    let query = `
+        SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
+        FROM Equipment_Components 
+        JOIN Equipment ON Equipment_Components.equipmentID = Equipment.equipmentID 
+        JOIN Components ON Equipment_Components.componentID = Components.componentID
+        ORDER BY Equipment_Components.equipmentComponentID;`;
+
     db.pool.query(query, function(error, rows, fields){
-        res.render('equipment_components', {data: rows});
-    })
+        if (error) {
+            console.log(error);
+            res.sendStatus(500);
+        } else {
+            res.render('equipment_components', {data: rows});
+        }
+    });
 });
 
 app.get('/parts', function(req, res)
@@ -233,19 +287,6 @@ app.post('/add-manufacturer-ajax', function(req, res) {
     });
 });
 
-app.post('/add-equipment-component-ajax', function(req, res) {
-    let data = req.body;
-    let query = `INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (${data.equipmentID}, ${data.componentID})`;
-    db.pool.query(query, function(error, rows, fields){
-        if (error) {
-            console.log(error);
-            res.sendStatus(400);
-        } else {
-            res.sendStatus(200);
-        }
-    });
-});
-
 app.post('/add-manual-ajax', function(req, res) 
 {
     // Capture the incoming data and parse it back to a JS object
@@ -298,30 +339,28 @@ app.post('/add-component-ajax', function(req, res)
     }
 
     // Create the query and run it on the database
-    query1 = `INSERT INTO Components (componentName, componentDescription, partID, componentNotes) VALUES ('${data.name}', '${data.description}', ${partID}, '${data.notes}')`;
+    query1 = `INSERT INTO Components (componentName, componentDescription, partID, componentNotes) 
+    VALUES ('${data.name}', '${data.description}', ${partID}, '${data.notes}')`;
     db.pool.query(query1, function(error, rows, fields){
 
-        // Check to see if there was an error
         if (error) {
 
-            // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
             console.log(error)
             res.sendStatus(400);
         }
         else
         {
-            // If there was no error, perform a SELECT * on Components
+            // Return all components
             query2 = `SELECT * FROM Components;`;
             db.pool.query(query2, function(error, rows, fields){
 
-                // If there was an error on the second query, send a 400
+                // SEnd a 400 if there was an error on the second query
                 if (error) {
-                    
-                    // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+
                     console.log(error);
                     res.sendStatus(400);
                 }
-                // If all went well, send the results of the query back.
+                // Return the results of the query
                 else
                 {
                     res.send(rows);
@@ -329,6 +368,38 @@ app.post('/add-component-ajax', function(req, res)
             })
         }
     })
+});
+
+// adding new data for equipment components
+app.post('/add-equipment-component-ajax', function(req, res) {
+    let data = req.body;
+    let query = `INSERT INTO Equipment_Components (equipmentID, componentID) 
+    VALUES (${data.equipmentID}, ${data.componentID})`;
+
+    db.pool.query(query, function(error, rows, fields){
+        if (error) {
+            console.log('error: ' + error);
+            res.sendStatus(400);
+        } else {
+
+            let query2 = `
+                SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
+                FROM Equipment_Components 
+                JOIN Equipment ON Equipment_Components.equipmentID = Equipment.equipmentID 
+                JOIN Components ON Equipment_Components.componentID = Components.componentID
+                ORDER BY Equipment_Components.equipmentComponentID;`;
+
+            db.pool.query(query2, function(error, rows, fields){
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    //console.log("rows: " + rows);
+                    res.json(rows); // Send back the updated list of equipment-component relationships
+                }
+            });
+        }
+    });
 });
 
 // deleting data
@@ -402,6 +473,73 @@ app.delete('/delete-part-ajax/', function(req,res){
     });
 });
 
+
+// deleting data for equipment components
+app.delete('/delete-equipment-component-ajax/', function(req,res){
+    let data = req.body;
+    let equipmentComponentID = parseInt(data.id);
+    let deleteQuery = `DELETE FROM Equipment_Components WHERE equipmentComponentID = ?`;
+
+    db.pool.query(deleteQuery, [equipmentComponentID], function(error, rows, fields) {
+        if (error) {
+            console.log(error);
+            res.sendStatus(400);
+        } else {
+            res.sendStatus(204);
+        }
+    });
+});
+
+// Reset database
+app.get('/reset-database', async function(req, res) {
+    const commands = [
+        "SET FOREIGN_KEY_CHECKS=0;",
+        "SET AUTOCOMMIT = 0;",
+
+        // Dropping all tables
+        "DROP TABLE IF EXISTS Parts;",
+        "DROP TABLE IF EXISTS Manufacturers;",
+        "DROP TABLE IF EXISTS Manuals;",
+        "DROP TABLE IF EXISTS Equipment;",
+        "DROP TABLE IF EXISTS Components;",
+        "DROP TABLE IF EXISTS Equipment_Components;",
+
+        // Recreating all tables
+        "CREATE TABLE Manuals (manualID int NOT NULL UNIQUE AUTO_INCREMENT, manualName varchar(50) NOT NULL UNIQUE, manualLink varchar(255), PRIMARY KEY (manualID));",
+        "CREATE TABLE Manufacturers (manufacturerID int NOT NULL UNIQUE AUTO_INCREMENT, manufacturerName varchar(50) NOT NULL UNIQUE, manufacturerPhone varchar(50), manufacturerEmail varchar(50), manufacturerNotes varchar(255), PRIMARY KEY (manufacturerID));",
+        "CREATE TABLE Equipment (equipmentID int NOT NULL UNIQUE AUTO_INCREMENT, equipmentName varchar(50) NOT NULL UNIQUE, equipmentNotes varchar(255), PRIMARY KEY (equipmentID));",
+        "CREATE TABLE Parts (partID int NOT NULL UNIQUE AUTO_INCREMENT, partName varchar(50) NOT NULL UNIQUE, partManufacturer int NOT NULL, partManual int, partNotes varchar(50), storeroomNumber int, PRIMARY KEY (partID), FOREIGN KEY (partManufacturer) REFERENCES Manufacturers(manufacturerID) ON DELETE CASCADE, FOREIGN KEY (partManual) REFERENCES Manuals(manualID) ON DELETE CASCADE);",
+        "CREATE TABLE Components (componentID int NOT NULL UNIQUE AUTO_INCREMENT, componentName varchar(50) NOT NULL UNIQUE, componentDescription varchar(50), partID int NOT NULL, componentNotes varchar(255), PRIMARY KEY (componentID), FOREIGN KEY (partID) REFERENCES Parts(partID) ON DELETE CASCADE);",
+        "CREATE TABLE Equipment_Components (equipmentComponentID int NOT NULL UNIQUE AUTO_INCREMENT, equipmentID int NOT NULL, componentID int NOT NULL, PRIMARY KEY (equipmentComponentID), UNIQUE KEY unique_equipment_component (equipmentID, componentID), FOREIGN KEY (equipmentID) REFERENCES Equipment(equipmentID) ON DELETE CASCADE, FOREIGN KEY (componentID) REFERENCES Components(componentID) ON DELETE CASCADE);",
+
+        // Inserting initial data
+        "INSERT INTO Manuals (manualName, manualLink) VALUES ('Alfa Laval Manual', 'https://s3.amazonaws.com/freecodecamp/relaxing-cat.jpg'), ('Burkert Manual', 'https://bit.ly/fcc-running-cats'), ('Sigma Manual', 'https://bit.ly/2RhOvm4'), ('Emerson Manual', 'https://www.youtube.com/watch?v=J---aiyznGQ');",
+        "INSERT INTO Manufacturers (manufacturerName, manufacturerPhone, manufacturerEmail, manufacturerNotes) VALUES ('Alfa Laval', '<Manufacturer Phone 1>', '<Manufacturer Email 1>', 'Notes for Alfa Laval'), ('Burkert', '<Manufacturer Phone 2>', '<Manufacturer Email 2>', 'Notes for Burkert'), ('Sigma', NULL, NULL, 'Notes for Sigma'), ('Emerson', NULL, NULL, 'Notes for Emerson');",
+        "INSERT INTO Equipment (equipmentName, equipmentNotes) VALUES ('Fin1', 'Finisher 1'), ('HPP2', 'High Pressure Pump 2'), ('SEP1', 'Separator 1'), ('CIPB', 'CIP B'), ('RT01', 'Raw Silo 1'), ('D1', 'Dryer 1');",
+        "INSERT INTO Parts (partName, partManufacturer, partManual, partNotes, storeroomNumber) VALUES ('LKH45', 1, 1, '45 HP Centripetal Pump', 43), ('B15', 2, 2, '4-20 ma Control Valve', 22), ('PT100', 3, NULL, 'Sanitary RTD', 11), ('P5432', 4, NULL, '120 inH20 Sanitary Pressure Sensor', 17);",
+        "INSERT INTO Components (componentName, componentDescription, partID, componentNotes) VALUES ('PUM4569', 'Raw Silo 1 Discharge Pump', 1, 'Located in RT Hall'), ('PUM4570', 'CIP B Supply Pump', 1, 'Located in RAW CIP Room'), ('TCV8570', 'Finisher 1 Temperature Control Valve', 2, 'Level 115 between finishers 1 and 2'), ('TE3535', 'Dryer 1 Burner Temp', 3, 'Dryer 1 Burner Temp'), ('PT1323', 'Separator 1 Back Pressure', 4, 'Separator 1 Back Pressure');",
+        "INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (3, 5), (4, 2), (5, 1), (6, 4);",
+        "SET FOREIGN_KEY_CHECKS=1;",
+        "COMMIT;"
+    ];
+
+    try {
+        for (const command of commands) {
+            await new Promise((resolve, reject) => {
+                db.pool.query(command, (error, results) => {
+                    if (error) reject(error);
+                    else resolve(results);
+                });
+            });
+        }
+        res.send("Database reset successfully");
+    } catch (error) {
+        console.error("Database reset error: ", error);
+        res.status(500).send("Error resetting database");
+    }
+});
+
+
 // updating data
 app.put('/put-component-ajax', function(req,res,next){
     let data = req.body;
@@ -437,6 +575,7 @@ app.put('/put-component-ajax', function(req,res,next){
                   })
               }
   })});
+
 
 /*
     LISTENER
