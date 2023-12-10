@@ -4,51 +4,57 @@
 
 <h1>Manufacturers</h1>
 
-<!-- Form for Adding New Manufacturer -->
-<form id="add-manufacturer-form-ajax">
-    <label for="input-manufacturer-name">Manufacturer Name:</label>
-    <input type="text" id="input-manufacturer-name" name="manufacturerName"><br>
+<div class="content">
+    <div class="table-container">
+        <!-- Table for Displaying Manufacturers -->
+        <table id="manufacturers-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Notes</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each data}}
+                <tr>
+                    <td>{{this.manufacturerID}}</td>
+                    <td>{{this.manufacturerName}}</td>
+                    <td>{{this.manufacturerPhone}}</td>
+                    <td>{{this.manufacturerEmail}}</td>
+                    <td>{{this.manufacturerNotes}}</td>
+                    <td>
+                        <!-- Actions like Delete or Edit -->
+                        <button onclick="deleteManufacturer({{this.manufacturerID}})">Delete</button>
+                    </td>
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
 
-    <label for="input-manufacturer-phone">Phone:</label>
-    <input type="text" id="input-manufacturer-phone" name="manufacturerPhone"><br>
+    <div class="forms-container">
+        <!-- Form for Adding New Manufacturer -->
+        <form id="add-manufacturer-form-ajax">
+            <label for="input-manufacturer-name">Manufacturer Name:</label>
+            <input type="text" id="input-manufacturer-name" name="manufacturerName"><br>
 
-    <label for="input-manufacturer-email">Email:</label>
-    <input type="email" id="input-manufacturer-email" name="manufacturerEmail"><br>
+            <label for="input-manufacturer-phone">Phone:</label>
+            <input type="text" id="input-manufacturer-phone" name="manufacturerPhone"><br>
 
-    <label for="input-manufacturer-notes">Notes:</label>
-    <input type="text" id="input-manufacturer-notes" name="manufacturerNotes"><br>
+            <label for="input-manufacturer-email">Email:</label>
+            <input type="email" id="input-manufacturer-email" name="manufacturerEmail"><br>
 
-    <input type="submit" value="Add Manufacturer">
-</form>
+            <label for="input-manufacturer-notes">Notes:</label>
+            <input type="text" id="input-manufacturer-notes" name="manufacturerNotes"><br>
 
-<!-- Table for Displaying Manufacturers -->
-<table id="manufacturers-table">
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Notes</th>
-        <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    {{#each data}}
-        <tr>
-            <td>{{this.manufacturerID}}</td>
-            <td>{{this.manufacturerName}}</td>
-            <td>{{this.manufacturerPhone}}</td>
-            <td>{{this.manufacturerEmail}}</td>
-            <td>{{this.manufacturerNotes}}</td>
-            <td>
-                <!-- Actions like Delete or Edit -->
-                <button onclick="deleteManufacturer({{this.manufacturerID}})">Delete</button>
-            </td>
-        </tr>
-    {{/each}}
-    </tbody>
-</table>
+            <input type="submit" value="Add Manufacturer">
+        </form>
+    </div>
+</div>
 
 <!-- Embed our javascript to handle the DOM manipulation and AJAX request -->
 <script src="./js/add_manufacturers.js"></script>

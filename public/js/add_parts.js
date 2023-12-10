@@ -9,15 +9,17 @@ addPartsForm.addEventListener("submit", function (e) {
 
     // Get form fields we need to get data from
     let inputName = document.getElementById("input-part-name");
-    let inputManufacturer = document.getElementById("input-part-manufacturer");
-    let inputManual = document.getElementById("input-part-manual");
+    let inputManufacturer = document.getElementById("input-part-manufacturer-ajax");
+    let selectedManufacturer = inputManufacturer.options[inputManufacturer.selectedIndex];
+    let inputManual = document.getElementById("input-part-manual-ajax");
+    let selectedManual = inputManual.options[inputManual.selectedIndex];
     let inputNotes = document.getElementById("input-part-notes");
     let inputStoreroom = document.getElementById("input-storeroom-number");
 
     // Get the values from the form fields
     let nameValue = inputName.value;
-    let manufacturerValue = inputManufacturer.value;
-    let manualValue = inputManual.value;
+    let manufacturerValue = selectedManufacturer.value;
+    let manualValue = selectedManual.value;
     let notesValue = inputNotes.value;
     let storeroomValue = inputStoreroom.value;
 

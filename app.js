@@ -117,15 +117,27 @@ app.get('/equipment', function(req, res)
         })  
     });
 
-app.get('/components', function(req, res)
+    app.get('/components', function(req, res)
     {
-        let query2 = "SELECT * FROM Components;"; 
-        
-        db.pool.query(query2, function(error, rows, fields){
-            res.render('components', {data: rows});                 
-        })   
-    });
+        let query1 = `
+            SELECT Components.componentID, Components.componentName,
+                   Components.componentDescription, Parts.partName, Components.componentNotes
+            FROM Components
+            JOIN Parts ON Components.partID = Parts.partID
+            ORDER BY Components.componentID`;
 
+        let query2 = "SELECT * FROM Parts;";
+        
+        db.pool.query(query1, function(error, rows, fields){
+            let components = rows;
+
+            db.pool.query(query2, (error, rows, fields) => {
+                let parts = rows;
+                res.render('components', {data: components, parts: parts}); 
+            })                
+        });   
+    });
+    
 app.get('/equipment-components', function(req, res) {
     let query = `
         SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
@@ -146,10 +158,29 @@ app.get('/equipment-components', function(req, res) {
 
 app.get('/parts', function(req, res)
     {
-        let query3 = "SELECT * FROM Parts;"; 
+        let query1 = `
+            SELECT Parts.partID, Parts.partName, Manufacturers.manufacturerName,
+            Manuals.manualName, Parts.partNotes, Parts.storeroomNumber
+            FROM Parts
+            LEFT JOIN Manufacturers ON Manufacturers.manufacturerID = Parts.partManufacturer
+            LEFT JOIN Manuals ON Manuals.manualID = Parts.partManual
+            ORDER BY Parts.partID`;
+
+        let query2 = "SELECT * FROM Manufacturers";
+
+        let query3 = "SELECT * FROM Manuals";
         
-        db.pool.query(query3, function(error, rows, fields){
-            res.render('parts', {data: rows});                 
+        db.pool.query(query1, function(error, rows, fields){
+            let parts = rows;
+            
+            db.pool.query(query2, (error, rows, fields) => {
+                let manufacturers = rows;
+
+                db.pool.query(query3, (error, rows, fields) => {
+                    let manuals = rows;
+                    res.render('parts', {data: parts, manufacturers: manufacturers, manuals: manuals}); 
+                })     
+            })                    
         })   
     });
 
@@ -442,6 +473,7 @@ app.delete('/delete-part-ajax/', function(req,res){
     });
 });
 
+
 // deleting data for equipment components
 app.delete('/delete-equipment-component-ajax/', function(req,res){
     let data = req.body;
@@ -506,6 +538,43 @@ app.get('/reset-database', async function(req, res) {
         res.status(500).send("Error resetting database");
     }
 });
+
+
+// updating data
+app.put('/put-component-ajax', function(req,res,next){
+    let data = req.body;
+  
+    let part = data.part === "" ? null : parseInt(data.part);
+    let component = parseInt(data.component);
+  
+    let queryUpdatePart = `UPDATE Components SET partID = ? WHERE Components.componentId = ?`;
+    let selectPart = `SELECT * FROM Parts WHERE partId = ?`
+  
+          // Run the 1st query
+          db.pool.query(queryUpdatePart, [part, component], function(error, rows, fields){
+              if (error) {
+  
+              // Log the error to the terminal so we know what went wrong, and send the visitor an HTTP response 400 indicating it was a bad request.
+              console.log(error);
+              res.sendStatus(400);
+              }
+  
+              // If there was no error, we run our second query and return that data so we can use it to update the people's
+              // table on the front-end
+              else
+              {
+                  // Run the second query
+                  db.pool.query(selectPart, [part], function(error, rows, fields) {
+  
+                      if (error) {
+                          console.log(error);
+                          res.sendStatus(400);
+                      } else {
+                          res.send(rows);
+                      }
+                  })
+              }
+  })});
 
 
 /*

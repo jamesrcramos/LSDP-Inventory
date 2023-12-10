@@ -2,85 +2,94 @@
 
 <h1>Equipment</h1>
 
-{{!-- Displaying Table --}}
-<table id="equipment-table">
+<div class="content">
+    <div class="table-container">
+        {{!-- Displaying Table --}}
+        <table id="equipment-table">
 
-    {{!-- Header section --}}
-    <thead>
+            {{!-- Header section --}}
+            <thead>
 
-        {{!-- For just the first row, we print each key of the row object as a header cell so we
-        know what each column means when the page renders --}}
-        <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-            <th>delete</th>
-        </tr>
-    </thead>
+                {{!-- For just the first row, we print each key of the row object as a header cell so we
+                know what each column means when the page renders --}}
+                <tr>
+                    {{#each data.[0]}}
+                    <th>
+                        {{@key}}
+                    </th>
+                    {{/each}}
+                    <th>delete</th>
+                </tr>
+            </thead>
 
-    {{!-- Body section --}}
-    <tbody>
+            {{!-- Body section --}}
+            <tbody>
 
-        {{!-- For each row, print the attributes in order --}}
-        {{#each data}}
-        <tr>
-            <td>{{this.equipmentID}}</td>
-            <td>{{this.equipmentName}}</td>
-            <td>{{this.equipmentNotes}}</td>
-            <td><button onclick="deleteEquipment({{this.equipmentID}})">Delete</button></td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/delete_equipment.js"></script>
+                {{!-- For each row, print the attributes in order --}}
+                {{#each data}}
+                <tr>
+                    <td>{{this.equipmentID}}</td>
+                    <td>{{this.equipmentName}}</td>
+                    <td>{{this.equipmentNotes}}</td>
+                    <td><button onclick="deleteEquipment({{this.equipmentID}})">Delete</button></td>
+                </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+    {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+    <script src="./js/delete_equipment.js"></script>
 
-{{!-- Add Data to Table Form --}}
-<h2>Add New Equipment</h2>
-<form id="add-equipment-form-ajax">
-    <label for="input-name">Equipment Name: </label>
-    <input type="text" name="input-name" id="input-name">
+    <div class="forms-container">
+        {{!-- Search Table for Data Form --}}
+        <h2>Search</h2>
+        <form id="search-equipment-html" method='GET' action='/equipment'>
+            <label for="input-name">Search by Equipment Name: </label>
+            <input type="text" name="name" id="input-equipment_name-html-search">
+            
+            <input type="submit">
+            <a href='/'><button>Reset</button></a>
+        </form>
 
-    <label for="input-notes">Notes: </label>
-    <input type="text" name="input-notes" id="input-notes">
+        {{!-- Add Data to Table Form --}}
+        <h2>Add New Equipment</h2>
+        <form id="add-equipment-form-ajax">
+            <label for="input-name">Equipment Name: </label>
+            <input type="text" name="input-name" id="input-name">
 
-    <input type="submit">
+            <label for="input-notes">Notes: </label>
+            <input type="text" name="input-notes" id="input-notes">
+
+            <input type="submit">
+        </form>
+        {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+        <script src="./js/add_equipment.js"></script>
+
+        {{!-- Update Row in Table Form --}}
+        <h2>Update an Equipment</h2>
+        <p>Update the "Notes" section of a piece of Equipment.</p>
+        <form id="update-equipment-form-ajax">
+
+            <label for="input-fullname">Full name: </label>
+            <select name="input-fullname" id="mySelect">
+                <option value="test">Select a Person</option>
+                {{#each data}}
+                <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
+                {{/each}}
+            </select>
+
+            <label for="input-homeworld">Homeworld: </label>
+            <select name="input-homeworld" id="input-homeworld-update">
+                <option>Select a Planet</option>
+                {{#each planets}}
+                <option value="{{this.id}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+            <input type="submit">
+
+        </form>
+    </div>
+</div>
+
 </form>
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
-<script src="./js/add_equipment.js"></script>
 
-{{!-- Search Table for Data Form --}}
-<h2>Search</h2>
-<form id="search-equipment-html" method='GET' action='/equipment'>
-    <label for="input-name">Search by Equipment Name: </label>
-    <input type="text" name="name" id="input-equipment_name-html-search">
-    
-    <input type="submit">
-    <a href='/'><button>Reset</button></a>
-</form>
-
-{{!-- Update Row in Table Form --}}
-<h2>Update an Equipment</h2>
-<p>Update the "Notes" section of a piece of Equipment.</p>
-<form id="update-equipment-form-ajax">
-
-    <label for="input-fullname">Full name: </label>
-    <select name="input-fullname" id="mySelect">
-        <option value="test">Select a Person</option>
-        {{#each data}}
-        <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
-        {{/each}}
-    </select>
-
-    <label for="input-homeworld">Homeworld: </label>
-    <select name="input-homeworld" id="input-homeworld-update">
-        <option>Select a Planet</option>
-        {{#each planets}}
-        <option value="{{this.id}}">{{this.name}}</option>
-        {{/each}}
-    </select>
-    <input type="submit">
-
-</form>
