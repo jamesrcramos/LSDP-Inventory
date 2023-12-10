@@ -2,53 +2,6 @@
 
 <h1>Components</h1>
 
-{{!-- Create a table --}}
-<table id="components-table">
-
-    <thead>
-        <tr>
-            {{#each data.[0]}}
-            <th>
-                {{@key}}
-            </th>
-            {{/each}}
-        </tr>
-    </thead>
-
-    {{!-- Body section --}}
-    <tbody>
-
-        {{!-- For each row, print the attributes in order --}}
-        {{#each data}}
-        <tr>
-            <td>{{this.componentID}}</td>
-            <td>{{this.componentName}}</td>
-            <td>{{this.componentDescription}}</td>
-            <td>{{this.partID}}</td>
-            <td>{{this.componentNotes}}</td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
-
-{{!-- Add Data to Table Form --}}
-<h2>Add New Component</h2>
-<form id="add-component-form-ajax">
-    <label for="input-name">Component Name: </label>
-    <input type="text" name="input-name" id="input-name">
-    
-    <label for="input-description">Description: </label>
-    <input type="text" name="input-description" id="input-description">
-
-    <label for="input-partID">Part ID: </label>
-    <input type="number" name="input-partID" id="input-partID">
-
-    <label for="input-notes">Notes: </label>
-    <input type="text" name="input-notes" id="input-notes">
-
-    <input type="submit">
-</form>
-
 <div class="content">
     <div class="table-container">
         {{!-- Create a table --}}
@@ -56,16 +9,14 @@
 
             {{!-- Header section --}}
             <thead>
-
-                {{!-- For just the first row, we print each key of the row object as a header cell so we
-                know what each column means when the page renders --}}
-                <tr>
-                    {{#each data.[0]}}
-                    <th>
-                        {{@key}}
-                    </th>
-                    {{/each}}
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Associated Part</th>
+                <th>Notes</th>
+                <th>Actions</th> <!-- Added column for actions like delete -->
+            </tr>
             </thead>
 
             {{!-- Body section --}}
@@ -87,16 +38,16 @@
 
     <div class="forms-container">
         {{!-- Add Data to Table Form --}}
-        <h2>Add New Component</h2>
+        <h2>Add</h2>
         <form id="add-component-form-ajax">
-            <label for="input-name">Component Name: </label>
+            <label for="input-name">Name: </label>
             <input type="text" name="input-name" id="input-name">
             
             <label for="input-description">Description: </label>
             <input type="text" name="input-description" id="input-description">
 
             <select name="input-parts" id="input-part-ajax">
-                <option value="">Part:</option>
+                <option value="">Associated Part:</option>
                 {{#each parts}}
                 <option value="{{this.partID}}">{{this.partName}}</option>
                 {{/each}}
@@ -105,11 +56,11 @@
             <label for="input-notes">Notes: </label>
             <input type="text" name="input-notes" id="input-notes">
 
-            <input type="submit">
+            <input type="submit" value="Add New Component">
         </form>
 
         {{!-- Update Table Data Form --}}
-        <h2>Update Component</h2>
+        <h2>Update</h2>
         <form id="update-component-form-ajax">
 
             <label for="input-component">Component: </label>
@@ -120,7 +71,7 @@
                 {{/each}}
             </select>
 
-            <label for="input-part">Part: </label>
+            <label for="input-part">Associated Part: </label>
             <select name="input-part" id="input-part-update">
                 <option>Select a Part</option>
                 {{#each parts}}
@@ -128,7 +79,7 @@
                 {{/each}}
                 <option value="">NULL</option>
             </select>
-            <input type="submit">
+            <input type="submit" value="Update Component">
 
         </form>
     </div>

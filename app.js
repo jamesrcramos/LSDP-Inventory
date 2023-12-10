@@ -63,7 +63,6 @@ app.get('/api/components', function(req, res) {
 });
 
 // API endpoint for fetching equipment components
-
 app.get('/api/equipment-components', function(req, res) {
     let query = `
         SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
@@ -117,26 +116,34 @@ app.get('/equipment', function(req, res)
         })  
     });
 
-    app.get('/components', function(req, res)
-    {
-        let query1 = `
-            SELECT Components.componentID, Components.componentName,
-                   Components.componentDescription, Parts.partName, Components.componentNotes
-            FROM Components
-            JOIN Parts ON Components.partID = Parts.partID
-            ORDER BY Components.componentID`;
+app.get('/components', function(req, res)
+{
+    let query1 = `
+        SELECT Components.componentID, Components.componentName,
+                Components.componentDescription, Parts.partName, Components.componentNotes
+        FROM Components
+        JOIN Parts ON Components.partID = Parts.partID
+        ORDER BY Components.componentID`;
 
-        let query2 = "SELECT * FROM Parts;";
-        
-        db.pool.query(query1, function(error, rows, fields){
-            let components = rows;
-
-            db.pool.query(query2, (error, rows, fields) => {
-                let parts = rows;
-                res.render('components', {data: components, parts: parts}); 
-            })                
-        });   
+    let query2 = "SELECT * FROM Parts;"; 
+    
+    db.pool.query(query1, function(error, rows, fields) {
+        if (error) {
+            console.error("Error in query1: ", error);
+            return res.status(500).send("Database query error");
+        }
+        let components = rows;
+    
+        db.pool.query(query2, (error, rows, fields) => {
+            if (error) {
+                console.error("Error in query2: ", error);
+                return res.status(500).send("Database query error");
+            }
+            let parts = rows;
+            res.render('components', { data: components, parts: parts });
+        });
     });
+});
     
 app.get('/equipment-components', function(req, res) {
     let query = `
