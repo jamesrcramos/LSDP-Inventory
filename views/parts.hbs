@@ -9,12 +9,12 @@
             {{!-- Header section --}}
             <thead>
             <tr>
-                <th>Part ID</th>
-                <th>Part Name</th>
-                <th>Part Manufacturer</th>
-                <th>Part Manual</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Manufacturer</th>
+                <th>Associated Manual</th>
                 <th>Storeroom Number</th>
-                <th>Part Notes</th>
+                <th>Notes</th>
                 <th>Actions</th> <!-- Added column for actions like delete -->
             </tr>
             </thead>
@@ -42,15 +42,15 @@
 
     <div class="forms-container">
         {{!-- Form for Adding New Part --}}
-        <h2>Add New Part</h2>
+        <h2>Add</h2>
         <form id="add-parts-form-ajax">
-            <label for="input-part-name">Part Name:</label>
+            <label for="input-part-name">Name:</label>
             <input type="text" id="input-part-name" name="partName"><br>
 
             {{!-- <label for="input-part-manufacturer">Part Manufacturer:</label>
             <input type="number" id="input-part-manufacturer" name="partManufacturer"><br> --}}
             <select name="input-part-manufacturer" id="input-part-manufacturer-ajax">
-                <option value="">Part Manufacturer:</option>
+                <option value="">Manufacturer:</option>
                 {{#each manufacturers}}
                 <option value="{{this.manufacturerID}}">{{this.manufacturerName}}</option>
                 {{/each}}
@@ -59,25 +59,25 @@
             {{!-- <label for="input-part-manual">Part Manual:</label>
             <input type="number" id="input-part-manual" name="partManual"><br> --}}
             <select name="input-part-manual" id="input-part-manual-ajax">
-                <option value="">Part Manual:</option>
+                <option value="">Associated Manual:</option>
                 {{#each manuals}}
                 <option value="{{this.manualID}}">{{this.manualName}}</option>
                 {{/each}}
             </select>
 
-            <label for="input-part-notes">Part Notes:</label>
-            <input type="text" id="input-part-notes" name="partNotes"><br>
-
             <label for="input-storeroom-number">Storeroom Number:</label>
             <input type="number" id="input-storeroom-number" name="storeroomNumber"><br>
 
-            <input type="submit" value="Add Part">
+            <label for="input-part-notes">Notes:</label>
+            <input type="text" id="input-part-notes" name="partNotes"><br>
+
+            <input type="submit" value="Add New Part">
         </form>
 
         {{!-- Search Table for Data Form --}}
 
         {{!-- Update Part Form --}}
-        <h2>Update Part</h2>
+        {{!-- <h2>Update Part</h2>
         <form id="update-parts-form-ajax">
         <label for="input-part-id">Part ID:</label>
         <input type="number" id="input-part-id" name="partID"><br>
@@ -99,7 +99,7 @@
 
         <input type="submit" value="Update Part">
         
-        </form>
+        </form> --}}
     </div>
 </div>
 
