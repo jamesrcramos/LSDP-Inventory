@@ -8,16 +8,12 @@
 
             {{!-- Header section --}}
             <thead>
-
-                {{!-- For just the first row, we print each key of the row object as a header cell so we
-                know what each column means when the page renders --}}
-                <tr>
-                    {{#each data.[0]}}
-                    <th>
-                        {{@key}}
-                    </th>
-                    {{/each}}
-                </tr>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Link</th>
+                <th>Actions</th> <!-- Added column for actions like delete -->
+            </tr>
             </thead>
 
             {{!-- Body section --}}
@@ -37,15 +33,15 @@
 
     <div class="forms-container">
         {{!-- Add Data to Table Form --}}
-        <h2>Add New Manual</h2>
+        <h2>Add</h2>
         <form id="add-manual-form-ajax">
-            <label for="input-name">Manual Name: </label>
+            <label for="input-name">Name: </label>
             <input type="text" name="input-name" id="input-name">
             
             <label for="input-link">Link: </label>
             <input type="text" name="input-link" id="input-link">
 
-            <input type="submit">
+            <input type="submit" value="Add New Manual">
         </form>
     </div>
 </div>
