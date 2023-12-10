@@ -9,14 +9,18 @@
     <title>LSDP Inventory</title>
 </head>
 <body>
-    {{> nav}}
-    {{{body}}}
-    <button id="reset-database">Reset Database</button>
-    <script src="./js/reset_database.js"></script>
-
-
-    <main class="container-fluid">
+<article>
+    <Header>{{> nav}}</Header>
+    <Body>
+    <main class="container">
         {{{body}}}
     </main>
+    </Body>
+    <Footer>
+        <button id="reset-database" role="button">Reset Database</button>
+        <script src="./js/reset_database.js"></script>
+
+    </Footer>
+</article>
 </body>
 </html>

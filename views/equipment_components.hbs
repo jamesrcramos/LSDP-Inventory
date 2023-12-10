@@ -17,7 +17,7 @@
             </thead>
             <tbody>
             {{#each data}}
-                <tr>
+                <tr >
                     <td>{{this.equipmentComponentID}}</td>
                     <td>{{this.equipmentName}}</td>
                     <td>{{this.componentName}}</td>
@@ -52,17 +52,16 @@
 </div>
     <div class="forms-container">
     <h2>Update Equipment-Component Relationship</h2>
-    <form id="update-equipment-component-form-ajax">
-        <label for="select-equipment-component">Select Equipment-Component Relationship:</label>
-        <select id="select-equipment-component" name="equipmentComponentID">
+    <form id="update-equipment-components-form-ajax">
+        <label for="select-equipment-components">Select Equipment-Component Relationship:</label>
+        <select id="select-equipment-components" name="equipmentComponentID">
             {{#each data}}
-                <option value="{{this.equipmentComponentID}}">{{this.equipmentComponentID}}</option>
+                <option value="{{this.equipmentComponentID}}">{{this.equipmentName}} / {{this.componentName}}</option>
             {{/each}}
         </select><br>
 
         <label for="select-equipments">Select Equipment:</label>
         <select id="select-equipments" name="equipmentID">
-            <option disabled selected value >Selct</option>
         </select><br>
 
         <label for="select-components">Select Component:</label>
@@ -87,9 +86,9 @@
 
         // Fetch and populate components
         $.getJSON('/api/components', function(data) {
-            console.log("data: " + data)
+            //console.log("data: " + data)
             var componentOptions = data.map(function(component) {
-                console.log("component: " + component.id)
+                //console.log("component: " + component.id)
                 return '<option value="' + component.id + '">' + component.name + '</option>';
             });
             $('#select-component').html(componentOptions.join(''));
@@ -110,3 +109,4 @@
 
     <script src="./js/add_equipment_components.js"></script>
     <script src="./js/delete_equipment_components.js"></script>
+    <script src="./js/update_equipment_components.js"></script>
