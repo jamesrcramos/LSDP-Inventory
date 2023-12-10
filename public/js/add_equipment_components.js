@@ -20,14 +20,14 @@ addEquipmentComponentForm.addEventListener("submit", function (e) {
     xhttp.setRequestHeader("Content-type", "application/json");
 
     xhttp.onreadystatechange = () => {
-        if (xhttp.readyState == 4 && xhttp.status == 200) {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
 
             addRowToEquipmentComponentTable(xhttp.response);
 
             selectEquipment.value = '';
             selectComponent.value = '';
         }
-        else if (xhttp.readyState == 4 && xhttp.status != 200) {
+        else if (xhttp.readyState === 4 && xhttp.status !== 200) {
             console.log("There was an error with the input.")
             console.log(xhttp.response)
         }
@@ -42,7 +42,7 @@ addRowToEquipmentComponentTable = (data) => {
     let parsedData = JSON.parse(data);
     //console.log(parsedData) // Print the parsed new row data
     let newRowData = parsedData[parsedData.length - 1];
-    console.log("newRowData: " + newRowData);
+    //console.log("newRowData: " + newRowData);
 
     // Create the new row
     let row = document.createElement("TR");
@@ -51,8 +51,8 @@ addRowToEquipmentComponentTable = (data) => {
     let componentCell = document.createElement("TD");
     let deleteCell = document.createElement("TD");
 
-    console.log("newRowData.equipmentComponentID: " + newRowData.equipmentName)
-    console.log("newRowData.equipmentID: " + newRowData.equipmentID)
+    //console.log("newRowData.equipmentComponentID: " + newRowData.equipmentName)
+    //console.log("newRowData.equipmentID: " + newRowData.equipmentID)
 
     idCell.innerText = newRowData.equipmentComponentID;
     equipmentCell.innerText = newRowData.equipmentName;  // Show the name of the equipment, not the ID

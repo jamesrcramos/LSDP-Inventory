@@ -10,7 +10,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(express.static('public'))
 
-PORT        = 3000          // Set a port number at the top so it's easy to change in the future
+PORT        = 3000          // Set a port number at the top, so it's easy to change in the future
 
 // app.js
 const { engine } = require('express-handlebars');
@@ -100,7 +100,7 @@ app.get('/equipment', function(req, res)
         let query2 = "SELECT * FROM Equipment;";
         
         // Run the 1st query
-        db.pool.query(query1, function(error, rows, fields){
+        db.pool.query(query1, function(error, rows){
         
             // Save all equipment
             let all_equipment = rows;
@@ -113,7 +113,7 @@ app.get('/equipment', function(req, res)
 
                 return res.render('equipment', {data: all_equipment, search_data: subset_equipment});
             })
-        })  
+        })
     });
 
 app.get('/components', function(req, res)
@@ -122,7 +122,7 @@ app.get('/components', function(req, res)
         SELECT Components.componentID, Components.componentName,
                 Components.componentDescription, Parts.partName, Components.componentNotes
         FROM Components
-        JOIN Parts ON Components.partID = Parts.partID
+        LEFT JOIN Parts ON Components.partID = Parts.partID
         ORDER BY Components.componentID`;
 
     let query2 = "SELECT * FROM Parts;"; 
@@ -501,22 +501,22 @@ app.delete('/delete-equipment-component-ajax/', function(req,res){
 app.get('/reset-database', async function(req, res) {
     const commands = [
         "SET FOREIGN_KEY_CHECKS=0;",
-        "SET AUTOCOMMIT = 0;",
 
         // Dropping all tables
+
+        "DROP TABLE IF EXISTS Equipment_Components;",
+        "DROP TABLE IF EXISTS Components;",
         "DROP TABLE IF EXISTS Parts;",
+        "DROP TABLE IF EXISTS Equipment;",
         "DROP TABLE IF EXISTS Manufacturers;",
         "DROP TABLE IF EXISTS Manuals;",
-        "DROP TABLE IF EXISTS Equipment;",
-        "DROP TABLE IF EXISTS Components;",
-        "DROP TABLE IF EXISTS Equipment_Components;",
 
         // Recreating all tables
         "CREATE TABLE Manuals (manualID int NOT NULL UNIQUE AUTO_INCREMENT, manualName varchar(50) NOT NULL UNIQUE, manualLink varchar(255), PRIMARY KEY (manualID));",
         "CREATE TABLE Manufacturers (manufacturerID int NOT NULL UNIQUE AUTO_INCREMENT, manufacturerName varchar(50) NOT NULL UNIQUE, manufacturerPhone varchar(50), manufacturerEmail varchar(50), manufacturerNotes varchar(255), PRIMARY KEY (manufacturerID));",
         "CREATE TABLE Equipment (equipmentID int NOT NULL UNIQUE AUTO_INCREMENT, equipmentName varchar(50) NOT NULL UNIQUE, equipmentNotes varchar(255), PRIMARY KEY (equipmentID));",
         "CREATE TABLE Parts (partID int NOT NULL UNIQUE AUTO_INCREMENT, partName varchar(50) NOT NULL UNIQUE, partManufacturer int NOT NULL, partManual int, partNotes varchar(50), storeroomNumber int, PRIMARY KEY (partID), FOREIGN KEY (partManufacturer) REFERENCES Manufacturers(manufacturerID) ON DELETE CASCADE, FOREIGN KEY (partManual) REFERENCES Manuals(manualID) ON DELETE CASCADE);",
-        "CREATE TABLE Components (componentID int NOT NULL UNIQUE AUTO_INCREMENT, componentName varchar(50) NOT NULL UNIQUE, componentDescription varchar(50), partID int NOT NULL, componentNotes varchar(255), PRIMARY KEY (componentID), FOREIGN KEY (partID) REFERENCES Parts(partID) ON DELETE CASCADE);",
+        "CREATE TABLE Components (componentID int NOT NULL UNIQUE AUTO_INCREMENT, componentName varchar(50) NOT NULL UNIQUE, componentDescription varchar(50), partID int, componentNotes varchar(255), PRIMARY KEY (componentID), FOREIGN KEY (partID) REFERENCES Parts(partID) ON DELETE CASCADE);",
         "CREATE TABLE Equipment_Components (equipmentComponentID int NOT NULL UNIQUE AUTO_INCREMENT, equipmentID int NOT NULL, componentID int NOT NULL, PRIMARY KEY (equipmentComponentID), UNIQUE KEY unique_equipment_component (equipmentID, componentID), FOREIGN KEY (equipmentID) REFERENCES Equipment(equipmentID) ON DELETE CASCADE, FOREIGN KEY (componentID) REFERENCES Components(componentID) ON DELETE CASCADE);",
 
         // Inserting initial data
@@ -526,8 +526,7 @@ app.get('/reset-database', async function(req, res) {
         "INSERT INTO Parts (partName, partManufacturer, partManual, partNotes, storeroomNumber) VALUES ('LKH45', 1, 1, '45 HP Centripetal Pump', 43), ('B15', 2, 2, '4-20 ma Control Valve', 22), ('PT100', 3, NULL, 'Sanitary RTD', 11), ('P5432', 4, NULL, '120 inH20 Sanitary Pressure Sensor', 17);",
         "INSERT INTO Components (componentName, componentDescription, partID, componentNotes) VALUES ('PUM4569', 'Raw Silo 1 Discharge Pump', 1, 'Located in RT Hall'), ('PUM4570', 'CIP B Supply Pump', 1, 'Located in RAW CIP Room'), ('TCV8570', 'Finisher 1 Temperature Control Valve', 2, 'Level 115 between finishers 1 and 2'), ('TE3535', 'Dryer 1 Burner Temp', 3, 'Dryer 1 Burner Temp'), ('PT1323', 'Separator 1 Back Pressure', 4, 'Separator 1 Back Pressure');",
         "INSERT INTO Equipment_Components (equipmentID, componentID) VALUES (3, 5), (4, 2), (5, 1), (6, 4);",
-        "SET FOREIGN_KEY_CHECKS=1;",
-        "COMMIT;"
+        "SET FOREIGN_KEY_CHECKS=1;"
     ];
 
     try {
@@ -582,6 +581,44 @@ app.put('/put-component-ajax', function(req,res,next){
                   })
               }
   })});
+
+// updating Equipment Components
+
+app.put('/put-equipment-components-ajax', function(req, res) {
+    let data = req.body;
+    let equipmentComponentID = parseInt(data.equipmentComponentID);
+    let newEquipmentID = parseInt(data.equipment);
+    let newComponentID = parseInt(data.component);
+
+    if (isNaN(equipmentComponentID) || isNaN(newEquipmentID) || isNaN(newComponentID)) {
+        return res.status(400).send('Invalid IDs');
+    }
+
+    let queryUpdateEquipmentComponent = `UPDATE Equipment_Components SET equipmentID = ?, componentID = ? WHERE equipmentComponentID = ?`;
+
+    db.pool.query(queryUpdateEquipmentComponent, [newEquipmentID, newComponentID, equipmentComponentID], function(error, result) {
+        if (error) {
+            console.log(error);
+            return res.sendStatus(400);
+        } else {
+            // Return the updated equipment-component entry
+            let querySelectUpdated = `
+                SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
+                FROM Equipment_Components
+                JOIN Equipment ON Equipment_Components.equipmentID = Equipment.equipmentID
+                JOIN Components ON Equipment_Components.componentID = Components.componentID
+                WHERE Equipment_Components.equipmentComponentID = ?`;
+            db.pool.query(querySelectUpdated, [equipmentComponentID], function(error, rows, fields) {
+                if (error) {
+                    console.log(error);
+                    res.sendStatus(400);
+                } else {
+                    res.send(rows); // Send back the updated equipment-component entry
+                }
+            });
+        }
+    });
+});
 
 
 /*
