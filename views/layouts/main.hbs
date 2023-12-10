@@ -10,18 +10,17 @@
 </head>
 <body>
 <article>
-    <Header>{{> nav}}</Header>
+    <Header>
+        {{> nav}}
+    </Header>
     <Body>
     <main class="container">
-    {{> nav}}
-    <main class="container-fluid">
         {{{body}}}
     </main>
     </Body>
     <Footer>
-        <button id="reset-database" role="button">Reset Database</button>
-        <script src="./js/reset_database.js"></script>
-
+        <p>© James C. Ramos / Carlos E. Bernal Urbina</p>
+        <p>Oregon State University</p>
     </Footer>
 </article>
 </body>
