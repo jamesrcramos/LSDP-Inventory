@@ -2,26 +2,6 @@
 
 <h1>Equipment-Components</h1>
 
-<form id="add-equipment-component-form-ajax">
-    <label for="select-equipment">Select Equipment:</label>
-    <select id="select-equipment" name="equipmentID">
-        <option value="1">Equipment 1</option>
-        <option value="2">Equipment 2</option>
-        <option value="3">Equipment 3</option>
-    </select><br>
-
-    <label for="select-component">Select Component:</label>
-    <select id="select-component" name="componentID">
-        <option value="1">Component 1</option>
-        <option value="2">Component 2</option>
-        <option value="3">Component 3</option>
-    </select><br>
-
-    <input type="submit" value="Add Relationship">
-</form>
-
-
-
 <table id="equipment-components-table">
     <thead>
     <tr>
@@ -33,7 +13,7 @@
     </thead>
     <tbody>
     {{#each data}}
-        <tr>
+        <tr data-value="{{this.equipmentComponentID}}">
             <td>{{this.equipmentComponentID}}</td>
             <td>{{this.equipmentName}}</td>
             <td>{{this.componentName}}</td>
@@ -44,6 +24,72 @@
     {{/each}}
     </tbody>
 </table>
+
+<h2>Add New Equipment-Component Relationship</h2>
+
+<form id="add-equipment-component-form-ajax">
+    <p><strong>Make sure to add your equipment or component before adding a relationship</strong></p>
+    <label for="select-equipment">Select Equipment:</label>
+    <select id="select-equipment" name="equipmentID">
+    </select><br>
+
+    <label for="select-component">Select Component:</label>
+    <select id="select-component" name="componentID">
+    </select><br>
+
+    <input type="submit" value="Add Relationship">
+</form>
+
+<form id="update-equipment-component-form-ajax">
+    <label for="select-equipment-component">Select Equipment-Component Relationship:</label>
+    <select id="select-equipment-component" name="equipmentComponentID">
+        {{#each data}}
+            <option value="{{this.equipmentComponentID}}">{{this.equipmentComponentID}}</option>
+        {{/each}}
+    </select><br>
+
+    <label for="select-equipment">Select Equipment:</label>
+    <select id="select-equipment" name="equipmentID">
+    </select><br>
+
+    <label for="select-component">Select Component:</label>
+    <select id="select-component" name="componentID">
+    </select><br>
+
+    <input type="submit" value="Update Relationship">
+</form>
+
+<script>
+    $(document).ready(function() {
+        // Fetch and populate equipment
+        $.getJSON('/api/equipment', function(data) {
+            var equipmentOptions = data.map(function(equipment) {
+                return '<option value="' + equipment.id + '">' + equipment.name + '</option>';
+            });
+            $('#select-equipment').html(equipmentOptions.join(''));
+        });
+
+        // Fetch and populate components
+        $.getJSON('/api/components', function(data) {
+            console.log("data: " + data)
+            var componentOptions = data.map(function(component) {
+                console.log("component: " + component.id)
+                return '<option value="' + component.id + '">' + component.name + '</option>';
+            });
+            $('#select-component').html(componentOptions.join(''));
+        });
+
+        //Fetch and populate equipment-components
+        $.getJSON('/api/equipment-components', function(data) {
+            //console.log(data)
+            var equipmentComponentOptions = data.map(function(equipmentComponent) {
+                //console.log("equipment-comp: " + equipmentComponent.id)
+                return '<option value="' + equipmentComponent.id + '">' + equipmentComponent.equipmentName + ' | ' + equipmentComponent.componentName  + '</option>';
+            });
+            $('#select-equipment-component').html(equipmentComponentOptions.join(''));
+        });
+    });
+</script>
 
 <script src="./js/add_equipment_components.js"></script>
 <script src="./js/delete_equipment_components.js"></script>
