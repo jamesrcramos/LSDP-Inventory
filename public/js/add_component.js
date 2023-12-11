@@ -13,6 +13,7 @@ addComponentForm.addEventListener("submit", function (e) {
     let inputPart = document.getElementById("input-part-ajax");
     let selectedPart = inputPart.options[inputPart.selectedIndex];
     let inputNotes = document.getElementById("input-notes");
+    let inputPartID = document.getElementById("input-part-ajax");
 
     // Get the values from the form fields
     let nameValue = inputName.value;
@@ -66,11 +67,12 @@ addRowToTable = (data) => {
 
     // Get the location where we should insert the new row (end of table)
     let newRowIndex = currentTable.rows.length;
-
     // Get a reference to the new row from the database query (last object)
     let parsedData = JSON.parse(data);
+    console.log("parsedData: ", parsedData)
     let newRow = parsedData[parsedData.length - 1]
-
+    console.log("newRow: ", newRow)
+    console.log("newRow.componentName: ", newRow.componentName)
     // Create a row and its cells
     let row = document.createElement("TR");
     let idCell = document.createElement("TD");
@@ -92,13 +94,13 @@ addRowToTable = (data) => {
     row.appendChild(descriptionCell);
     row.appendChild(partIDCell);
     row.appendChild(notesCell);
-    
+    console.log("row: ", row)
     // Add the row to the table
     currentTable.appendChild(row);
 
     let selectMenu = document.getElementById("mySelect");
     let option = document.createElement("option");
+    console.log("newRow.componentName: ", newRow.componentName)
     option.text = newRow.componentName;
     option.value = newRow.componentID;
-    selectMenu.addEventListener(option);
 }
