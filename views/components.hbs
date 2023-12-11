@@ -21,7 +21,6 @@
                 <th>Description</th>
                 <th>Associated Part</th>
                 <th>Notes</th>
-                <th>Actions</th> <!-- Added column for actions like delete -->
             </tr>
             </thead>
 
@@ -30,7 +29,7 @@
 
                 {{!-- For each row, print the attributes in order --}}
                 {{#each data}}
-                <tr>
+                <tr data-value="{{this.componentID}}">
                     <td>{{this.componentID}}</td>
                     <td>{{this.componentName}}</td>
                     <td>{{this.componentDescription}}</td>
@@ -52,8 +51,8 @@
             <label for="input-description">Description: </label>
             <input type="text" name="input-description" id="input-description">
 
+            <label for="input-part-ajax">Associated Part: </label>
             <select name="input-parts" id="input-part-ajax">
-                <option value="">Associated Part:</option>
                 {{#each parts}}
                 <option value="{{this.partID}}">{{this.partName}}</option>
                 {{/each}}
@@ -92,6 +91,4 @@
 </div>
 
 <script src="./js/update_component.js"></script>
-
-{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
 <script src="./js/add_component.js"></script>

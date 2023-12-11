@@ -11,7 +11,7 @@
 <div class="content">
     <div class="table-container">
         <!-- Table for Displaying Manufacturers -->
-        <table id="manufacturers-table">
+        <table id="manufacturers-table" role="grid">
             <thead>
             <tr>
                 <th>ID</th>
@@ -24,7 +24,7 @@
             </thead>
             <tbody>
             {{#each data}}
-                <tr>
+                <tr data-value="{{this.manufacturerID}}">
                     <td>{{this.manufacturerID}}</td>
                     <td>{{this.manufacturerName}}</td>
                     <td>{{this.manufacturerPhone}}</td>

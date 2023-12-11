@@ -601,6 +601,7 @@ app.put('/put-equipment-components-ajax', function(req, res) {
             console.log(error);
             return res.sendStatus(400);
         } else {
+            // Return the updated equipment-component entry
             let querySelectUpdated = `
                 SELECT Equipment_Components.equipmentComponentID, Equipment.equipmentName, Components.componentName 
                 FROM Equipment_Components

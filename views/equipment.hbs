@@ -28,7 +28,7 @@
 
                 {{!-- For each row, print the attributes in order --}}
                 {{#each data}}
-                <tr>
+                <tr data-value="{{this.equipmentID}}">
                     <td>{{this.equipmentID}}</td>
                     <td>{{this.equipmentName}}</td>
                     <td>{{this.equipmentNotes}}</td>
@@ -63,32 +63,9 @@
 
             <input type="submit" value="Add New Piece of Equipment">
         </form>
+
         {{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
         <script src="./js/add_equipment.js"></script>
-
-        {{!-- Update Row in Table Form --}}
-        {{!-- <h2>Update</h2>
-        <p>Update the "Notes" section of a piece of Equipment.</p>
-        <form id="update-equipment-form-ajax">
-
-            <label for="input-fullname">Full name: </label>
-            <select name="input-fullname" id="mySelect">
-                <option value="test">Select a Person</option>
-                {{#each data}}
-                <option value="{{this.id}}">{{this.fname}} {{this.lname}}</option>
-                {{/each}}
-            </select>
-
-            <label for="input-homeworld">Homeworld: </label>
-            <select name="input-homeworld" id="input-homeworld-update">
-                <option>Select a Planet</option>
-                {{#each planets}}
-                <option value="{{this.id}}">{{this.name}}</option>
-                {{/each}}
-            </select>
-            <input type="submit">
-
-        </form> --}}
     </div>
 </div>
 

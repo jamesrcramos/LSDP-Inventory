@@ -22,14 +22,14 @@
         
             <tbody>
                 {{#each data}}
-                <tr >
-                    <td>{{this.equipmentComponentID}}</td>
-                    <td>{{this.equipmentName}}</td>
-                    <td>{{this.componentName}}</td>
-                    <td>
-                        <button onclick="deleteEquipmentComponent({{this.equipmentComponentID}})">Delete</button>
-                    </td>
-                </tr>
+                    <tr data-value="{{this.equipmentComponentID}}">
+                        <td>{{this.equipmentComponentID}}</td>
+                        <td>{{this.equipmentName}}</td>
+                        <td>{{this.componentName}}</td>
+                        <td>
+                            <button onclick="deleteEquipmentComponent({{this.equipmentComponentID}})">Delete</button>
+                        </td>
+                    </tr>
                 {{/each}}
             </tbody>
         </table>

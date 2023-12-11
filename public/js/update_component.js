@@ -59,6 +59,7 @@ updateComponentForm.addEventListener("submit", function (e) {
 
 function updateRow(data, componentID){
     let parsedData = JSON.parse(data);
+    console.log("parsedData: ", parsedData)
     
     let table = document.getElementById("components-table");
 
@@ -74,7 +75,7 @@ function updateRow(data, componentID){
             let td = updateRowIndex.getElementsByTagName("td")[3];
 
             // Reassign homeworld to our value we updated to
-            td.innerHTML = parsedData[0].name; 
+            td.innerHTML = parsedData[0].partName;
        }
     }
 }
