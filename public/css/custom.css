@@ -1,3 +1,13 @@
+/* Citation for the "custom.css" file:
+     Variable Overrides:
+        Adapted from: PicoCSS' 
+        Source URL: https://picocss.com/docs/customization.html
+     Container Styles:
+        Original work done by James Ramos and Carlos Bernal Urbina
+     Date: 12/10/2023 */
+
+
+/* Variable Overrides */
 /* Blue Light scheme (Default) */
 /* Can be forced with data-theme="light" */
 [data-theme="light"],
@@ -35,6 +45,7 @@
   --switch-color: var(--primary-inverse);
   --switch-checked-background-color: var(--primary);
 }
+
 
 /* Container Styles */
 .content {

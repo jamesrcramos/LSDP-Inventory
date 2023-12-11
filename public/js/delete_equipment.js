@@ -1,3 +1,9 @@
+/* Citation for the "delete_equipment.js" file:
+     Adapted from: Oregon State University's CS340's NodeJS Starter App Tutorial
+     Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+     Date: 12/10/2023 */
+
+
 function deleteEquipment(equipmentID) {
     let link = '/delete-equipment-ajax/';
     let data = {

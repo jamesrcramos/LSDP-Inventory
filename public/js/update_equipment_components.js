@@ -1,3 +1,9 @@
+/* Citation for the "update_equipment_components.js" file:
+     Adapted from: Oregon State University's CS340's NodeJS Starter App Tutorial
+     Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+     Date: 12/10/2023 */
+
+
 let updateEquipmentComponentsForm = document.getElementById('update-equipment-components-form-ajax');
 
 updateEquipmentComponentsForm.addEventListener("submit", function (e) {
