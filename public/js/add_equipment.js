@@ -86,7 +86,8 @@ addRowToTable = (data) => {
     row.appendChild(deleteCell);
 
     // Add a row attribute so the deleteRow function can find a newly added row
-    row.setAttribute('data-value', newRow.id);
+    console.log("parsedData: ", parsedData)
+    row.setAttribute('data-value', newRow.equipmentID);
     
     // Add the row to the table
     currentTable.appendChild(row);

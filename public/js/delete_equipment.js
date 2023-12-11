@@ -20,7 +20,7 @@ function deleteEquipment(equipmentID) {
       console.log("equipmentID: ", equipmentID)
       console.log("table: ", table)
 
-      for (let i = 0, row; row == table.rows[i]; i++) {
+      for (let i = 0, row; row = table.rows[i]; i++) {
           console.log("table rows: ", table.rows[i].getAttribute("data-value"))
           console.log("equipmentID: ", equipmentID)
           console.log("table.rows[i].getAttribute('data-value') === equipmentID: ", table.rows[i].getAttribute("data-value") === equipmentID)
