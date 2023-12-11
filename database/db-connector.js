@@ -3,7 +3,7 @@
      Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
      Date: 12/10/2023 */
 
-     
+
 // Get an instance of mysql we can use in the app
 var mysql = require('mysql')
 
@@ -11,9 +11,9 @@ var mysql = require('mysql')
 var pool = mysql.createPool({
     connectionLimit : 10,
     host            : 'classmysql.engr.oregonstate.edu',
-    user            : 'cs340_bernaluc',
-    password        : '8916',
-    database        : 'cs340_bernaluc'
+    user            : 'cs340_ramosjam',
+    password        : '6236',
+    database        : 'cs340_ramosjam'
 })
 
 // Export it for use in our application
