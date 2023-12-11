@@ -1,21 +1,26 @@
+{{!-- Citation for the "equipment_components.hbs" file:
+    Adapted from: Oregon State University's CS340's NodeJS Starter App Tutorial
+    Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+    Date: 12/10/2023  --}}
+
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
+<h1>Equipment-Components</h1>
 
-
-<article>
-    <h1>Equipment-Components</h1>
-    <div class="content">
-        <div class="table-container">
-            <table id="equipment-components-table" role="grid">
-                <thead>
-                <tr>
-                    <th>Equipment-Component ID</th>
-                    <th>Equipment Name</th>
-                    <th>Component Name</th>
-                    <th>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
+<div class="content">
+    <div class="table-container">
+        <table id="equipment-components-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Equipment Name</th>
+                <th>Component Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+        
+            <tbody>
                 {{#each data}}
                     <tr data-value="{{this.equipmentComponentID}}">
                         <td>{{this.equipmentComponentID}}</td>
@@ -26,32 +31,25 @@
                         </td>
                     </tr>
                 {{/each}}
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
     </div>
-</article>
 
-
-
-
-<article>
     <div class="forms-container">
-        <h2>Add Equipment-Component Relationship</h2>
+        <h2>Add</h2>
         <form id="add-equipment-component-form-ajax">
-            <label for="select-equipment">Select Equipment:</label>
+            <label for="select-equipment">Equipment:</label>
             <select id="select-equipment" name="equipmentID">
                 <option disabled selected value> -- select an option -- </option>
             </select><br>
 
-            <label for="select-component">Select Component:</label>
+            <label for="select-component">Component:</label>
             <select id="select-component" name="componentID">
             </select><br>
-            <input type="submit" value="Add Relationship">
+            <input type="submit" value="Add New Relationship">
         </form>
-    </div>
-    <div class="forms-container">
-        <h2>Update Equipment-Component Relationship</h2>
+
+        <h2>Update</h2>
         <form id="update-equipment-components-form-ajax">
             <label for="select-equipment-components">Select Equipment-Component Relationship:</label>
             <select id="select-equipment-components" name="equipmentComponentID">
@@ -60,18 +58,18 @@
                 {{/each}}
             </select><br>
 
-            <label for="select-equipments">Select Equipment:</label>
+            <label for="select-equipments">Equipment:</label>
             <select id="select-equipments" name="equipmentID">
             </select><br>
 
-            <label for="select-components">Select Component:</label>
+            <label for="select-components">Component:</label>
             <select id="select-components" name="componentID">
             </select><br>
 
             <input type="submit" value="Update Relationship">
         </form>
     </div>
-</article>
+</div>
 
 <script>
     $(document).ready(function() {

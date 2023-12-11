@@ -1,5 +1,9 @@
-// ./database/db-connector.js
+/* Citation for the "db-connector.js" file:
+     Adapted from: Oregon State University's CS340's NodeJS Starter App Tutorial
+     Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app
+     Date: 12/10/2023 */
 
+     
 // Get an instance of mysql we can use in the app
 var mysql = require('mysql')
 
