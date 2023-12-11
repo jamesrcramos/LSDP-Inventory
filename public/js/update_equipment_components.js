@@ -49,7 +49,7 @@ function updateRow(response, equipmentComponentID) {
     for (let i = 0, row; row = table.rows[i]; i++) {
         let id = row.cells[0].innerText;
         if (id == equipmentComponentID) {
-            // Assuming your response contains the updated equipment and component names
+            // Assuming response contains the updated equipment and component names
             row.cells[1].innerText = parsedData[0].equipmentName;
             row.cells[2].innerText = parsedData[0].componentName;
             break;
